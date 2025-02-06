@@ -1,20 +1,59 @@
+/* General App Styling */
 QWidget {
     background-color: #1a1a1a;
     color: #ffffff;
+    font-family: "Arial", sans-serif;
 }
 
+/* Buttons */
 QPushButton {
     background-color: #8b0000;
     color: white;
-    border-radius: 5px;
+    border: 2px solid #ff3333;
+    border-radius: 10px;
     padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 QPushButton:hover {
     background-color: #a00000;
+    border: 2px solid #ff5555;
 }
 
+/* Sidebar */
 QListWidget {
     background-color: #2a2a2a;
-    border: none;
+    border: 2px solid #8b0000;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+QLabel {
+    color: #ff3333;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Button Pressed Effect */
+QPushButton:pressed {
+    background-color: #6a0000;
+    border: 2px solid #cc0000;
+}
+
+QPushButton:focus {
+    outline: none;
+    border: 2px solid #ff7777;
+}
+
+/* Circular Icons Above Buttons */
+.circle-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: #8b0000;
+    border: 2px solid #ff3333;
+    padding: 5px;
 }

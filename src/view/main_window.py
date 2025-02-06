@@ -1,12 +1,13 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QListWidget
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QIcon, QPixmap
+from PyQt6.QtCore import Qt
 
 class MainWindow(QMainWindow):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
         self.setWindowTitle("Gaming Cafe")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 900, 650)
 
         # Main layout
         main_widget = QWidget()
@@ -14,27 +15,43 @@ class MainWindow(QMainWindow):
         main_layout = QHBoxLayout()
         main_widget.setLayout(main_layout)
 
-        # Sidebar (Profile and Active Sessions)r
+        # Sidebar (Profile and Active Sessions)
         sidebar = QVBoxLayout()
         self.profile_label = QLabel("Welcome to the Gamer Cafe")
-        self.profile_label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        self.profile_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
+        self.profile_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.active_sessions = QListWidget()
         sidebar.addWidget(self.profile_label)
         sidebar.addWidget(self.active_sessions)
         
-        # Main button area
+        # Main button area with circular icons
         button_layout = QVBoxLayout()
-        self.game_library_btn = QPushButton("Game Library")
-        self.tournaments_btn = QPushButton("Tournaments")
-        self.cafe_menu_btn = QPushButton("Café Menu")
-        self.settings_btn = QPushButton("Settings")
         
-        for btn, action in zip([self.game_library_btn, self.tournaments_btn, self.cafe_menu_btn, self.settings_btn],
-                               [self.controller.open_game_library, self.controller.open_tournaments, self.controller.open_cafe_menu, self.controller.open_settings]):
-            btn.setFont(QFont("Arial", 12))
-            btn.setFixedHeight(50)
+        buttons = [
+            ("Game Library", "resources\images\icon_library.png", "resources\images\library.png", self.controller.open_game_library),
+            ("Tournaments", "tournament.png", "resources\images\icon_tournament.png", self.controller.open_tournaments),
+            ("Café Menu", "cafe.png", "icon_cafe.png", self.controller.open_cafe_menu),
+            ("Settings", "settings.png", "icon_settings.png", self.controller.open_settings)
+        ]
+        
+        for text, icon, circle_icon, action in buttons:
+            btn_layout = QVBoxLayout()
+            
+            icon_label = QLabel()
+            icon_pixmap = QPixmap(circle_icon)
+            icon_label.setPixmap(icon_pixmap.scaled(90, 90, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+            icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            icon_label.setObjectName("circle-icon")  # Applying the CSS class
+            
+            btn = QPushButton(f" {text}")
+            btn.setIcon(QIcon(icon))
+            btn.setFont(QFont("Arial", 12, QFont.Weight.Bold))
+            btn.setFixedHeight(55)
             btn.clicked.connect(action)
-            button_layout.addWidget(btn)
+            
+            btn_layout.addWidget(icon_label)
+            btn_layout.addWidget(btn)
+            button_layout.addLayout(btn_layout)
         
         # Main layout
         main_layout.addLayout(sidebar, 2)  # Sidebar takes 2 parts

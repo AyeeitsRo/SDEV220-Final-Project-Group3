@@ -1,4 +1,4 @@
-from modules.game import Game
+from game import Game
 
 
 class GameLibrary():

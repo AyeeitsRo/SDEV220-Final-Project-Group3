@@ -22,17 +22,42 @@ QPushButton:hover {
 }
 
 /* Sidebars */
-#left_side {
-    background-color: #2a2a2a;
+QVBoxLayout#left_side {
+    background-color: #4c0101;
     border: 3px solid #8b0000;
     border-radius: 10px;
     padding: 5px;
 }
-#right_side {
-    background-color: #2a2a2a;
+
+QVBoxLayout#right_side {
+    background-color: #4c0101;
     border: 3px solid #8b0000;
     border-radius: 10px;
     padding: 5px;
+}
+
+/* News Feed Styling */
+QStackedWidget {
+    background-color: #4c0101;
+    border: 3px solid #8b0000;
+    color: #f66d6d;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    word-wrap: normal;
+    padding: 5px, 5px;
+}
+
+QPushButton#news_nav {
+    background-color: #8b0000;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+QPushButton#news_nav:hover {
+    background-color: #a00000;
 }
 
 QLabel {

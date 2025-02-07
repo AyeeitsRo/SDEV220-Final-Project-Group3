@@ -1,3 +1,4 @@
+from view.news_feed import NewsFeed
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QListWidget
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 from PyQt6.QtCore import Qt
@@ -18,15 +19,17 @@ class MainWindow(QMainWindow):
 
 
         # Left side bar (Gamer news / active events)
-        left_wrapper = QWidget()
-        left_wrapper.setObjectName("left_sife")  # Unique object name for styling purposes
         left_side = QVBoxLayout()
-        self.left_label = QLabel("News and Active Events")
-        self.left_label.setFont(QFont("Arial", 16, QFont.Weight.Light))
+
+        self.left_label = QLabel("Gaming News")
+        self.left_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         self.left_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.news_feed = NewsFeed("https://feeds.feedburner.com/ign/games-all")  # IGN Gaming News Feed
         self.active_events = QListWidget()
-        left_side.addWidget(left_wrapper)
+
         left_side.addWidget(self.left_label)
+        left_side.addWidget(self.news_feed)
         left_side.addWidget(self.active_events)
         
         # Main button area with circular icons
@@ -36,9 +39,9 @@ class MainWindow(QMainWindow):
         welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         buttons = [
-            ("Game Library", "resources\images\icon_library.png", "resources\images\library.png", self.controller.open_game_library),
-            ("Tournaments", "tournament.png", "resources\images\icon_tournament.png", self.controller.open_tournaments),
-            ("Café Menu", "cafe.png", "resources\images\icon_cafe.png", self.controller.open_cafe_menu),
+            ("Game Library", "resources/images/icon_library.png", "resources/images/library.png", self.controller.open_game_library),
+            ("Tournaments", "tournament.png", "resources/images/icon_tournament.png", self.controller.open_tournaments),
+            ("Café Menu", "cafe.png", "resources/images/icon_cafe.png", self.controller.open_cafe_menu),
         ]
         
         for text, icon, circle_icon, action in buttons:
@@ -62,14 +65,12 @@ class MainWindow(QMainWindow):
             button_layout.addLayout(btn_layout)
 
         # Right sidebar (Login/sign up and Gamer joke of the day) *I don't know, it's a filler. Time to get funny*
-        right_wrapper = QWidget()
-        right_wrapper.setObjectName("right_side") # unique name for styling purposes
         right_side = QVBoxLayout()
         self.right_label = QLabel("Some words here")
         self.right_label.setFont(QFont("Arial", 16, QFont.Weight.Light))
         self.right_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.profile_highlight = QListWidget()   
-        right_side.addWidget(right_wrapper)
+        
         right_side.addWidget(self.right_label)
         right_side.addWidget(self.profile_highlight) 
         

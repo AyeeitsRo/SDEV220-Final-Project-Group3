@@ -30,8 +30,7 @@ class MainWindow(QMainWindow):
         buttons = [
             ("Game Library", "resources\images\icon_library.png", "resources\images\library.png", self.controller.open_game_library),
             ("Tournaments", "tournament.png", "resources\images\icon_tournament.png", self.controller.open_tournaments),
-            ("Café Menu", "cafe.png", "icon_cafe.png", self.controller.open_cafe_menu),
-            ("Settings", "settings.png", "icon_settings.png", self.controller.open_settings)
+            ("Café Menu", "cafe.png", "resources\images\icon_cafe.png", self.controller.open_cafe_menu),
         ]
         
         for text, icon, circle_icon, action in buttons:

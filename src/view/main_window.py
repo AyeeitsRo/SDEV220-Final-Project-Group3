@@ -15,18 +15,26 @@ class MainWindow(QMainWindow):
         main_layout = QHBoxLayout()
         main_widget.setLayout(main_layout)
 
-        # Sidebar (Profile and Active Sessions)
-        sidebar = QVBoxLayout()
-        self.profile_label = QLabel("Welcome to the Gamer Cafe")
-        self.profile_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
-        self.profile_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.active_sessions = QListWidget()
-        sidebar.addWidget(self.profile_label)
-        sidebar.addWidget(self.active_sessions)
+
+
+        # Left side bar (Gamer news / active events)
+        left_wrapper = QWidget()
+        left_wrapper.setObjectName("left_sife")  # Unique object name for styling purposes
+        left_side = QVBoxLayout()
+        self.left_label = QLabel("News and Active Events")
+        self.left_label.setFont(QFont("Arial", 16, QFont.Weight.Light))
+        self.left_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.active_events = QListWidget()
+        left_side.addWidget(left_wrapper)
+        left_side.addWidget(self.left_label)
+        left_side.addWidget(self.active_events)
         
         # Main button area with circular icons
         button_layout = QVBoxLayout()
-        
+        welcome_label = QLabel("Welcome to the Gamer Cafe!")
+        welcome_label.setFont(QFont("Arial", 24, QFont.Weight.DemiBold))
+        welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         buttons = [
             ("Game Library", "resources\images\icon_library.png", "resources\images\library.png", self.controller.open_game_library),
             ("Tournaments", "tournament.png", "resources\images\icon_tournament.png", self.controller.open_tournaments),
@@ -48,13 +56,27 @@ class MainWindow(QMainWindow):
             btn.setFixedHeight(55)
             btn.clicked.connect(action)
             
+            btn_layout.addWidget(welcome_label)
             btn_layout.addWidget(icon_label)
             btn_layout.addWidget(btn)
             button_layout.addLayout(btn_layout)
+
+        # Right sidebar (Login/sign up and Gamer joke of the day) *I don't know, it's a filler. Time to get funny*
+        right_wrapper = QWidget()
+        right_wrapper.setObjectName("right_side") # unique name for styling purposes
+        right_side = QVBoxLayout()
+        self.right_label = QLabel("Some words here")
+        self.right_label.setFont(QFont("Arial", 16, QFont.Weight.Light))
+        self.right_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.profile_highlight = QListWidget()   
+        right_side.addWidget(right_wrapper)
+        right_side.addWidget(self.right_label)
+        right_side.addWidget(self.profile_highlight) 
         
         # Main layout
-        main_layout.addLayout(sidebar, 2)  # Sidebar takes 2 parts
-        main_layout.addLayout(button_layout, 3)  # Buttons take 3 parts
+        main_layout.addLayout(left_side, 2)  # Sidebar takes 2 parts
+        main_layout.addLayout(button_layout, 1)  # Buttons take 1 part
+        main_layout.addLayout(right_side, 2)  # Sidebar takes 2 parts
 
 if __name__ == "__main__":
     from controller import Controller

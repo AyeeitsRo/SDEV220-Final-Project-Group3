@@ -31,12 +31,13 @@ class Order:
     @property
     def add_total(self) -> float:
         """Calculates the total price of user order"""
+        total = 0.0
         for item in self.items:
-            total: float = item.price * item.quantity
+            total += item.price * item.quantity
         taxed_total: float = total * SALES_TAX
         return f"{taxed_total:.2f}"
     
-    def add_item(self, item, quantity = 1) -> None:
+    def add_item(self, item, quantity) -> None:
         """Add an item to user order"""
         item.quantity = quantity
         self.items.append(item)
@@ -61,15 +62,13 @@ class Order:
 # Drinks the cafe sells
 BLACK_COFFEE = DrinkItem('Black Coffee', 3.00)
 LATTE = DrinkItem('Latte', 8.50)
-MOCHA = DrinkItem('Mocha', 8.50)
 CAPPUCCINO = DrinkItem('Capppuccino', 7.00)
 ORANGE_JUICE = DrinkItem('Orange Juice', 5.50)
 
 # Food the cafe sells
 CAKE_POP = FoodItem('Cake Pop', 3.50)
-CHOC_CROISSANT = FoodItem('Chocolate Croissant', 7.25)
+CROISSANT = FoodItem('Croissant', 7.25)
 COFFEE_CAKE = FoodItem('Cinnamon Coffee Cake', 6.75)
-EVERYTHING_BAGEL = FoodItem('Everything Bagel', 7.00)
 CHOC_CHIP_COOKIE = FoodItem('Chocolate Chip Cookie', 3.00)
 
 
@@ -80,6 +79,8 @@ Example below of order output along with total
 **RUN CODE TO SEE OUTPUT**
 """
 order.add_item(LATTE, quantity=1)
+order.add_item(CAPPUCCINO, quantity = 2)
+order.add_item(CAKE_POP, quantity = 3)
 order.add_item(COFFEE_CAKE, quantity = 2)
 
 print(order)

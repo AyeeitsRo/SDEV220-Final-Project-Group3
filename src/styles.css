@@ -1,6 +1,6 @@
 /* General App Styling */
 QWidget {
-    background-color: #1a1a1a;
+    background-color: #2b1b1b;
     color: #ffffff;
     font-family: "Arial", sans-serif;
 }
@@ -8,7 +8,7 @@ QWidget {
 /* Buttons */
 QPushButton {
     background-color: #8b0000;
-    color: white;
+    color: #ffffff;
     border: 2px solid #ff3333;
     border-radius: 10px;
     padding: 10px;
@@ -19,53 +19,6 @@ QPushButton {
 QPushButton:hover {
     background-color: #a00000;
     border: 2px solid #ff5555;
-}
-
-/* Sidebars */
-QVBoxLayout#left_side {
-    background-color: #4c0101;
-    border: 3px solid #8b0000;
-    border-radius: 10px;
-    padding: 5px;
-}
-
-QVBoxLayout#right_side {
-    background-color: #4c0101;
-    border: 3px solid #8b0000;
-    border-radius: 10px;
-    padding: 5px;
-}
-
-/* News Feed Styling */
-QStackedWidget {
-    background-color: #4c0101;
-    border: 3px solid #8b0000;
-    color: #f66d6d;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    word-wrap: normal;
-    padding: 5px, 5px;
-}
-
-QPushButton#news_nav {
-    background-color: #8b0000;
-    color: white;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 14px;
-}
-
-QPushButton#news_nav:hover {
-    background-color: #a00000;
-}
-
-QLabel {
-    color: #ff3333;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
 }
 
 /* Button Pressed Effect */

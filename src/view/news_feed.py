@@ -18,17 +18,18 @@ class NewsFeed(QWidget):
 
         # Left arrow button
         self.left_button = QPushButton("←")
-        self.left_button.setFixedSize(30, 30)
+        self.left_button.setStyleSheet("border: 2px; background-color: #a00000; border-color: #ff5555; height: 30px; width: 30px; border-radius: 15px; padding: 2px, 2px, 2px, 2px;")
         self.left_button.clicked.connect(self.previous_news)
         self.layout.addWidget(self.left_button)
 
         # News container (Stacked Widget)
         self.news_container = QStackedWidget()
+        self.news_container.setStyleSheet("border: 5px; border-color: #fc0202; border-style: groove; background-color: #6a0000")
         self.layout.addWidget(self.news_container)
 
         # Right arrow button
         self.right_button = QPushButton("→")
-        self.right_button.setFixedSize(30, 30)
+        self.right_button.setStyleSheet("border: 2px; background-color: #a00000; border-color: #ff5555; height: 30px; width: 30px; border-radius: 15px; padding: 2px, 2px, 2px, 2px;")
         self.right_button.clicked.connect(self.next_news)
         self.layout.addWidget(self.right_button)
 
@@ -68,6 +69,7 @@ class NewsFeed(QWidget):
         for news in self.news_data:
             news_layout = QVBoxLayout()
             news_widget = QWidget()
+            news_widget.setStyleSheet("border: none;")
             news_widget.setLayout(news_layout)
 
             # Title (Clickable)
@@ -75,6 +77,7 @@ class NewsFeed(QWidget):
             title_label.setOpenExternalLinks(True)
             title_label.setFont(QFont("Arial", 12, QFont.Weight.Bold))
             title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            title_label.setStyleSheet("border: none;")
             news_layout.addWidget(title_label)
 
             # Image (if available)
@@ -88,6 +91,7 @@ class NewsFeed(QWidget):
                     pixmap = pixmap.scaled(180, 100, Qt.AspectRatioMode.KeepAspectRatio)  # Resize
                     image_label.setPixmap(pixmap)
                     image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                    image_label.setStyleSheet("border: none;")
                     news_layout.addWidget(image_label)
                 except requests.exceptions.RequestException:
                     print(f"Failed to load image: {news['image']}")  # Debugging
@@ -98,7 +102,7 @@ class NewsFeed(QWidget):
                 description_label.setText(news["description"])
                 description_label.setReadOnly(True)
                 description_label.setFixedHeight(60)  # Prevent it from expanding too much
-                description_label.setStyleSheet("background-color: transparent; border: none; color: #ffffff;")
+                description_label.setStyleSheet("border: none; color: #ffffff;")
                 news_layout.addWidget(description_label)
 
             # Add the complete widget to the stacked container

@@ -1,6 +1,7 @@
+import sys
 from view.news_feed import NewsFeed
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QListWidget
-from PyQt6.QtGui import QFont, QIcon, QPixmap
+from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt
 
 class MainWindow(QMainWindow):
@@ -19,13 +20,15 @@ class MainWindow(QMainWindow):
 
 
         # Left side bar (Gamer news / active events)
-        left_side = QVBoxLayout()
-
+        self.left_container = QWidget()
+        left_side = QVBoxLayout(self.left_container)
+        self.left_container.setStyleSheet("background-color: #201212; border: 3px solid #8b0000; border-radius: 10px; padding: 5px;")
         self.left_label = QLabel("Gaming News")
         self.left_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         self.left_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
+        self.left_label.setStyleSheet("background-color: transparent; border: none;")
         self.news_feed = NewsFeed("https://feeds.feedburner.com/ign/games-all")  # IGN Gaming News Feed
+        self.news_feed.setStyleSheet("border: none;")
         self.active_events = QListWidget()
 
         left_side.addWidget(self.left_label)
@@ -51,10 +54,9 @@ class MainWindow(QMainWindow):
             icon_pixmap = QPixmap(circle_icon)
             icon_label.setPixmap(icon_pixmap.scaled(90, 90, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
             icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            icon_label.setObjectName("circle-icon")  # Applying the CSS class
+            icon_label.setObjectName("circle-icon")
             
             btn = QPushButton(f" {text}")
-            btn.setIcon(QIcon(icon))
             btn.setFont(QFont("Arial", 12, QFont.Weight.Bold))
             btn.setFixedHeight(55)
             btn.clicked.connect(action)
@@ -65,9 +67,12 @@ class MainWindow(QMainWindow):
             button_layout.addLayout(btn_layout)
 
         # Right sidebar (Login/sign up and Gamer joke of the day) *I don't know, it's a filler. Time to get funny*
-        right_side = QVBoxLayout()
+        self.right_container = QWidget()
+        right_side = QVBoxLayout(self.right_container)
+        self.right_container.setStyleSheet("background-color: #201212; border: 3px solid #8b0000; border-radius: 10px; padding: 5px;")
         self.right_label = QLabel("Some words here")
         self.right_label.setFont(QFont("Arial", 16, QFont.Weight.Light))
+        self.right_label.setStyleSheet("background-color: transparent; border: none;")
         self.right_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.profile_highlight = QListWidget()   
         
@@ -75,9 +80,9 @@ class MainWindow(QMainWindow):
         right_side.addWidget(self.profile_highlight) 
         
         # Main layout
-        main_layout.addLayout(left_side, 2)  # Sidebar takes 2 parts
+        main_layout.addWidget(self.left_container, 2)  # Sidebar takes 2 parts
         main_layout.addLayout(button_layout, 1)  # Buttons take 1 part
-        main_layout.addLayout(right_side, 2)  # Sidebar takes 2 parts
+        main_layout.addWidget(self.right_container, 2)  # Sidebar takes 2 parts
 
 if __name__ == "__main__":
     from controller import Controller

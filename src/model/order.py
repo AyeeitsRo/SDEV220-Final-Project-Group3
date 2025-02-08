@@ -52,8 +52,9 @@ class Order:
         self.total = self.add_total
         
     def clear_order(self) -> None:
-        """Clears all items from user order""" # CURRENTLY NOT WORKING, NEEDS FIXING
-        self.items = []
+        """Clears all items from user order""" # CURRENTLY NOT WORKING, NEEDS FIXING; DOESN'T EVEN ACCESS METHOD WHEN CALLED
+        self.items.clear()
+        print('removed')
         self.total = 0.0
     
     def __str__(self) -> str:
@@ -80,14 +81,22 @@ order = Order()
 """
 Example below of order output along with total
 **RUN CODE TO SEE OUTPUT**
+CURRENTLY IN PROCESS OF DEBUGGING
 """
 order.add_item(LATTE, quantity=1)
+print(order)
 order.add_item(CAPPUCCINO, quantity = 2)
+print(order)
 order.add_item(CAKE_POP, quantity = 3)
+print(order)
 order.add_item(COFFEE_CAKE, quantity = 2)
+print(order)
+
 
 order.remove_item(CAPPUCCINO)
 
+print('before')
 order.clear_order # METHOD NEEDS FIXING
+print('after')
 
 print(order)

@@ -31,12 +31,13 @@ class Order:
     @property
     def add_total(self) -> float:
         """Calculates the total price of user order"""
+        total = 0.0
         for item in self.items:
-            total: float = item.price * item.quantity
+            total += item.price * item.quantity
         taxed_total: float = total * SALES_TAX
         return f"{taxed_total:.2f}"
     
-    def add_item(self, item, quantity = 1) -> None:
+    def add_item(self, item, quantity) -> None:
         """Add an item to user order"""
         item.quantity = quantity
         self.items.append(item)
@@ -80,6 +81,8 @@ Example below of order output along with total
 **RUN CODE TO SEE OUTPUT**
 """
 order.add_item(LATTE, quantity=1)
+order.add_item(CAPPUCCINO, quantity = 2)
+order.add_item(CAKE_POP, quantity = 3)
 order.add_item(COFFEE_CAKE, quantity = 2)
 
 print(order)

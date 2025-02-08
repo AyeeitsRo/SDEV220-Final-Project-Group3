@@ -1,7 +1,8 @@
 
-SALES_TAX = 1.07
+SALES_TAX = 1.07 # State sales tax constant variable
 
 class FoodItem:
+    """Class containing food item objects"""
     def __init__(self, name: str, price: float, photo = None):
         self.name = name
         self.price = price
@@ -13,6 +14,7 @@ class FoodItem:
 
 
 class DrinkItem:
+    """Class containing drink item objects"""
     def __init__(self, name: str, price: float, photo = None):
         self.name = name
         self.price = price
@@ -24,6 +26,7 @@ class DrinkItem:
 
 
 class Order:
+    """Child class of food and drink items containing object uses"""
     def __init__(self):
         self.items: list = [] # Holds list of user order
         self.total: float = 0.0 
@@ -49,12 +52,12 @@ class Order:
         self.total = self.add_total
         
     def clear_order(self) -> None:
-        """Clears all items from user order"""
+        """Clears all items from user order""" # CURRENTLY NOT WORKING, NEEDS FIXING
         self.items = []
         self.total = 0.0
     
     def __str__(self) -> str:
-        """Returns str of items"""
+        """Returns str of items user chose"""
         item_details = "\n".join(str(item) for item in self.items)
         return f'Items in order: \n{item_details}\n\nTotal: {self.total}'
 
@@ -82,5 +85,9 @@ order.add_item(LATTE, quantity=1)
 order.add_item(CAPPUCCINO, quantity = 2)
 order.add_item(CAKE_POP, quantity = 3)
 order.add_item(COFFEE_CAKE, quantity = 2)
+
+order.remove_item(CAPPUCCINO)
+
+order.clear_order # METHOD NEEDS FIXING
 
 print(order)

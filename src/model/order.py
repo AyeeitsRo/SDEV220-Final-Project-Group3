@@ -52,15 +52,15 @@ class Order:
         self.total = self.add_total
         
     def clear_order(self) -> None:
-        """Clears all items from user order""" # CURRENTLY NOT WORKING, NEEDS FIXING; DOESN'T EVEN ACCESS METHOD WHEN CALLED
+        """Clears all items from user order""" 
         self.items.clear()
-        print('removed')
+        print('Order is now empty.')
         self.total = 0.0
     
     def __str__(self) -> str:
         """Returns str of items user chose"""
         item_details = "\n".join(str(item) for item in self.items)
-        return f'Items in order: \n{item_details}\n\nTotal: {self.total}'
+        return f'Items in order: \n{item_details}\n\nTotal: {self.total}\n'
 
 
 # Drinks the cafe sells
@@ -83,20 +83,19 @@ Example below of order output along with total
 **RUN CODE TO SEE OUTPUT**
 CURRENTLY IN PROCESS OF DEBUGGING
 """
+# Attempting to add items to user order
 order.add_item(LATTE, quantity=1)
-print(order)
 order.add_item(CAPPUCCINO, quantity = 2)
-print(order)
 order.add_item(CAKE_POP, quantity = 3)
-print(order)
 order.add_item(COFFEE_CAKE, quantity = 2)
-print(order)
 
-
+# Testing to remove item from order
 order.remove_item(CAPPUCCINO)
 
-print('before')
-order.clear_order # METHOD NEEDS FIXING
-print('after')
+# Result of the above:
+print(order)
 
+# Testing the clear_order method
+order.clear_order()
+# Result of clear_order
 print(order)

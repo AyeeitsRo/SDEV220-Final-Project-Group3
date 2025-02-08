@@ -60,7 +60,7 @@ class Order:
 
 
 # Drinks the cafe sells
-BLACK_COFFEE = DrinkItem('Black Coffee', 3.00)
+BLACK_COFFEE = DrinkItem('Black Coffee', 'resources/images/black_coffee.png', 3.00) 
 LATTE = DrinkItem('Latte', 8.50)
 CAPPUCCINO = DrinkItem('Capppuccino', 7.00)
 ORANGE_JUICE = DrinkItem('Orange Juice', 5.50)

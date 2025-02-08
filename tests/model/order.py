@@ -62,15 +62,13 @@ class Order:
 # Drinks the cafe sells
 BLACK_COFFEE = DrinkItem('Black Coffee', 3.00)
 LATTE = DrinkItem('Latte', 8.50)
-MOCHA = DrinkItem('Mocha', 8.50)
 CAPPUCCINO = DrinkItem('Capppuccino', 7.00)
 ORANGE_JUICE = DrinkItem('Orange Juice', 5.50)
 
 # Food the cafe sells
 CAKE_POP = FoodItem('Cake Pop', 3.50)
-CHOC_CROISSANT = FoodItem('Chocolate Croissant', 7.25)
+CROISSANT = FoodItem('Croissant', 7.25)
 COFFEE_CAKE = FoodItem('Cinnamon Coffee Cake', 6.75)
-EVERYTHING_BAGEL = FoodItem('Everything Bagel', 7.00)
 CHOC_CHIP_COOKIE = FoodItem('Chocolate Chip Cookie', 3.00)
 
 

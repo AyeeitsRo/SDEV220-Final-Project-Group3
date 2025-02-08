@@ -60,16 +60,16 @@ class Order:
 
 
 # Drinks the cafe sells
-BLACK_COFFEE = DrinkItem('Black Coffee', 'resources/images/black_coffee.png', 3.00) 
-LATTE = DrinkItem('Latte', 8.50)
-CAPPUCCINO = DrinkItem('Capppuccino', 7.00)
-ORANGE_JUICE = DrinkItem('Orange Juice', 5.50)
+BLACK_COFFEE = DrinkItem('Black Coffee', 3.00, 'resources/images/black_coffee.png') 
+LATTE = DrinkItem('Latte', 8.50, 'resources/images/latte.png')
+CAPPUCCINO = DrinkItem('Capppuccino', 7.00, 'resources/images/cappuccino.png')
+ORANGE_JUICE = DrinkItem('Orange Juice', 5.50, 'resources/images/orange_juice.png')
 
 # Food the cafe sells
-CAKE_POP = FoodItem('Cake Pop', 3.50)
-CROISSANT = FoodItem('Croissant', 7.25)
-COFFEE_CAKE = FoodItem('Cinnamon Coffee Cake', 6.75)
-CHOC_CHIP_COOKIE = FoodItem('Chocolate Chip Cookie', 3.00)
+CAKE_POP = FoodItem('Cake Pop', 3.50, 'resources/images/cake_pop.png')
+CROISSANT = FoodItem('Croissant', 7.25, 'resources/images/croissant.png')
+COFFEE_CAKE = FoodItem('Cinnamon Coffee Cake', 6.75, 'resources/images/coffee_cake.png')
+CHOC_CHIP_COOKIE = FoodItem('Chocolate Chip Cookie', 3.00, 'resources/images/choc_chip_cookie.png')
 
 
 order = Order()

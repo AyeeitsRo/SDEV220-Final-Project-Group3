@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
         welcome_label.setFont(QFont("Arial", 24, QFont.Weight.DemiBold))
         welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        # List of menu buttons
         buttons = [
             ("Game Library", "resources/images/icon_library.png", "resources/images/library.png", self.controller.open_game_library),
             ("Tournaments", "tournament.png", "resources/images/icon_tournament.png", self.controller.open_tournaments),
@@ -66,7 +67,7 @@ class MainWindow(QMainWindow):
             btn_layout.addWidget(btn)
             button_layout.addLayout(btn_layout)
 
-        # Right sidebar (Login/sign up and Gamer joke of the day) *I don't know, it's a filler. Time to get funny*
+        # Right sidebar (Login/sign up and Gamer joke of the day??)
         self.right_container = QWidget()
         right_side = QVBoxLayout(self.right_container)
         self.right_container.setStyleSheet("background-color: #201212; border: 3px solid #8b0000; border-radius: 10px; padding: 5px;")

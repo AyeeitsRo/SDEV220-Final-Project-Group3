@@ -1,9 +1,22 @@
-/* General App Styling */
+/* General Styling Template */
 QWidget {
     background-color: #2b1b1b;
     color: #ffffff;
     font-family: "Arial", sans-serif;
 }
+
+QListWidget::item {
+    background-color: #8b0101;  /* Dark red/maroon background */
+    border: 5px ridge #f71515;  /* Deep red border */
+    border-radius: 10px;  /* Rounded corners */
+    padding: 5px; /* Space inside QListWidget */
+}
+
+QListWidget::item:selected {
+    background-color: #ff5555; /* Red highlight when selected */
+    color: black;
+}
+
 
 /* Buttons */
 QPushButton {
@@ -40,4 +53,29 @@ QPushButton:focus {
     background-color: #8b0000;
     border: 2px solid #ff3333;
     padding: 5px;
+}
+
+/* Scrollbar Styling for Horizontal Scrollbars */
+QScrollBar:horizontal {
+    border: 2px solid #8b0000;
+    background: #201212;
+    height: 10px;
+    margin: 0px 20px 0px 20px;
+}
+QScrollBar::handle:horizontal {
+    background: #ff5555;
+    min-width: 50px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: #ff7777;
+}
+QScrollBar::add-line:horizontal, 
+QScrollBar::sub-line:horizontal {
+    background: none;
+    width: 0px;
+}
+QScrollBar::add-page:horizontal, 
+QScrollBar::sub-page:horizontal {
+    background: none;
 }

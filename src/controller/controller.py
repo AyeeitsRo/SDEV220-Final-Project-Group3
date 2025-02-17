@@ -1,30 +1,55 @@
 from view.menu import MenuWindow
 from view.tournament_display import TournamentDisplay
 from view.game_library_display import GameDisplay
+from model.current_events import CurrentEvents
+from view.events_display import EventsDisplay, AllEventsDisplay
 
 class Controller:
+    """
+    Controller class 
+    This class manages the interaction between views and click events in the GUI
+    """
+
     def __init__(self):
-        pass
+        """Initialize the controller and load current events."""
+        self.events = CurrentEvents() # Class in model/current_events.py
 
-    # Opens the game library      
     def open_game_library(self):
-        print("Game Library opened") # Debugging tool
-        self.game_library_display = GameDisplay()
-        self.game_library_display.show()
+        """Opens the Game Library window."""
+        print("Game Library opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
+        self.game_library_display = GameDisplay(self) # Class in view/game_library.py
+        self.game_library_display.show() # Opens the GUI window
 
-    # Opens the tournaments window
     def open_tournaments(self):
-        print("Tournaments opened") # Debugging tool
-        self.tournament_view = TournamentDisplay()
-        self.tournament_view.show()
+        """Opens the Tournaments window."""
+        print("Tournaments opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
+        self.tournament_view = TournamentDisplay() # Class in view/tournament_display.py
+        self.tournament_view.show() # Opens the GUI window
 
-    # Opens the menu for the cafe
     def open_cafe_menu(self):
-        print("Café Menu opened") # Debugging tool
-        self.menu_window = MenuWindow()
-        self.menu_window.show()
+        """Opens the Cafe Menu window."""
+        print("Café Menu opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
+        self.menu_window = MenuWindow() # Class in view/menu.py
+        self.menu_window.show() # Opens the GUI window
 
-if __name__ == "__main__":
-    controller = Controller()
-    controller.open_game_library()
+    def on_game_clicked(self, game_name):
+        """Opens the Events Display for a specific game.
 
+        Args:
+            game_name (str): The name of the game for which event should be displayed.
+        """
+        print(f"--- {game_name.upper()} Events at the Cafe ---") # Debugging tool, the name of the game clicked should print if this is working correctly.
+        self.event_window = EventsDisplay(game_name, self) # Class in view/events_display.py
+        # The order of the above arguments matter, game_name comes before controller(self)
+        self.event_window.show() # Opens the GUI window
+
+    def open_events(self):
+        """Opens the All Events display window, showing all upcoming events at the cafe."""
+        print("Opening All Events Window")  # Debugging tool, if this function is successfully called, this line will print to the terminal
+        self.all_events = AllEventsDisplay(self)  # Class in view/events_display.py
+        self.all_events.show()  # Opens the GUI window
+
+    def on_signup(self, event, event_type):
+        """Handles sign-up button click."""
+        print(f"User signed up for: {event['name']} ({event_type.capitalize()})") 
+        # Debugging tool, the correct event and event_type should print to the terminal

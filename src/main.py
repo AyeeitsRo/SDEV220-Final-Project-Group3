@@ -3,7 +3,12 @@ from PyQt6.QtWidgets import QApplication
 import view.main_window as mw  
 import controller.controller as ctr 
 
+"""
+This is the main file from which the program runs
+"""
+
 def load_stylesheet(app):
+    """ Opens styles.css, which creates a template for generalized styling through out the GUI """
     with open("src/styles.css", "r") as f: # Open css file and read
         app.setStyleSheet(f.read())  # Apply styles to the app
 

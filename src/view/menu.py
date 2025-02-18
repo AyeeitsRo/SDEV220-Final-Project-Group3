@@ -93,22 +93,26 @@ class MenuWindow(QWidget):
         drink_section = QLabel("Drinks", self)
         drink_section.setStyleSheet("color: white; font-size: 18px;")
         left_layout.addWidget(drink_section)
+
+        # Add drinks to the layout
+        drinks = [BLACK_COFFEE, LATTE, CAPPUCCINO, ORANGE_JUICE]
         
-        # Example drink items (image, name, price, add button)
-        for i in range(4):
-            drink_item_frame = self.create_item_frame(f"Drink {i + 1}", 5.99, "drink_image.png")
+        for drink in drinks:
+            drink_item_frame = self.create_item_frame(drink.name, drink.price, drink.photo)
             left_layout.addWidget(drink_item_frame)
-        
+
         # Food section
         food_section = QLabel("Food", self)
         food_section.setStyleSheet("color: white; font-size: 18px;")
         left_layout.addWidget(food_section)
-        
-        # Example food items (image, name, price, add button)
-        for i in range(4):
-            food_item_frame = self.create_item_frame(f"Food {i + 1}", 7.99, "food_image.png")
-            left_layout.addWidget(food_item_frame)
 
+        # Add food to the layout
+        foods = [CAKE_POP, CROISSANT, COFFEE_CAKE, CHOC_CHIP_COOKIE]
+        
+        for food in foods:
+            food_item_frame = self.create_item_frame(food.name, food.price, food.photo)
+            left_layout.addWidget(food_item_frame)
+        
         # Right side (Cart Area) - Adding a red border here
         right_frame = QFrame(self)
         right_frame.setStyleSheet("background-color: black; border: 2px solid red; border-radius: 10px;")  # Red border added for cart
@@ -147,7 +151,7 @@ class MenuWindow(QWidget):
         image_label.setPixmap(pixmap)
         
         # Item Name and Price
-        item_info = QLabel(f"{item_name}\n${item_price}", self)
+        item_info = QLabel(f"{item_name}\n${item_price:.2f}", self)
         item_info.setStyleSheet("color: white; font-size: 14px;")
 
         # Add to Cart button

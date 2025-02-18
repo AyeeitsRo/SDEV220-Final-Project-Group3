@@ -82,7 +82,7 @@ order = Order()
 Example below of order output along with total
 **RUN CODE TO SEE OUTPUT**
 CURRENTLY IN PROCESS OF DEBUGGING
-"""
+
 # Attempting to add items to user order
 order.add_item(LATTE, quantity=1)
 order.add_item(CAPPUCCINO, quantity = 2)
@@ -99,3 +99,4 @@ print(order)
 order.clear_order()
 # Result of clear_order
 print(order)
+"""

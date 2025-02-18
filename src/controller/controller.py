@@ -23,14 +23,18 @@ class Controller:
     def open_tournaments(self):
         """Opens the Tournaments window."""
         print("Tournaments opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
-        self.tournament_view = TournamentDisplay() # Class in view/tournament_display.py
+        self.tournament_view = TournamentDisplay(self) # Class in view/tournament_display.py
         self.tournament_view.show() # Opens the GUI window
 
     def open_cafe_menu(self):
         """Opens the Cafe Menu window."""
         print("Café Menu opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
-        self.menu_window = MenuWindow() # Class in view/menu.py
+        self.menu_window = MenuWindow(self) # Class in view/menu.py
         self.menu_window.show() # Opens the GUI window
+
+    def add_to_cart(self, item_name, item_price):
+        """Adds item to the cart in menu.py"""
+        print(f"{item_name} successfully added to the cart. \n Total: {item_price}")
 
     def on_game_clicked(self, game_name):
         """Opens the Events Display for a specific game.
@@ -50,6 +54,41 @@ class Controller:
         self.all_events.show()  # Opens the GUI window
 
     def on_signup(self, event, event_type):
-        """Handles sign-up button click."""
-        print(f"User signed up for: {event['name']} ({event_type.capitalize()})") 
-        # Debugging tool, the correct event and event_type should print to the terminal
+        """
+        Handles user sign-up for a tournament or campaign.
+
+        Args:
+            event_name (str): The name of the event (tournament or campaign).
+            event_type (str): The type of event ('tournament' or 'campaign').
+        """
+        # If event is a dictionary, extract its name
+        event_name = event["name"] if isinstance(event, dict) else event
+
+        print(f"Attempting to sign up for: {event_name} ({event_type.capitalize()})")
+
+        # Fetch event details from CurrentEvents
+        current_events = CurrentEvents()
+
+        if event_type == "tournament":
+            events_list = current_events.tournaments
+        elif event_type == "campaign":
+            events_list = current_events.campaigns
+        else:
+            print("Invalid event type.")
+            return
+
+        # Find the specific event dictionary
+        event_details = None
+        for game, events in events_list.items():
+            for e in events:
+                if e["name"] == event_name:
+                    event_details = e
+                    break
+            if event_details:
+                break
+
+        if event_details:
+            print(f"User signed up for: {event_details['name']} ({event_type.capitalize()})")
+            # TODO: Implement database storage or UI update here
+        else:
+            print("Event not found. Ensure the event name is correct.")

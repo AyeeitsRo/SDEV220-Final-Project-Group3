@@ -15,16 +15,17 @@ class CurrentEvents:
         # Dictionary of cafe-hosted tournaments: {game_name: [list of tournaments]}
         self.tournaments = {
             "chess": [
-                {"name": "Cafe Chess Masters", "date": "03-10-2025", "time": "6:00 PM", "entry_fee": "$10", "prize": "$500"},
-                {"name": "Blitz Night", "date": "03-15-2025", "time": "8:00 PM", "entry_fee": "$5", "prize": "Free Drinks"}
+                {"name": "Cafe Chess Masters", "date": "2025-03-10", "time": "6:00 PM", "entry_fee": "$10", "prize": "$500", "max_players": 8, "type": "single_elimination"},
+                {"name": "Blitz Night", "date": "2025-03-15", "time": "8:00 PM", "entry_fee": "$5", "prize": "Free Drinks", "max_players": 4, "type": "round_robin"}
             ],
             "magic": [
-                {"name": "MTG Friday Night Magic", "date": "03-22-2025", "time": "7:00 PM", "entry_fee": "$15", "prize": "Store Credit"}
+                {"name": "MTG Friday Night Magic", "date": "2025-03-22", "time": "7:00 PM", "entry_fee": "$15", "prize": "Store Credit", "max_players": 16, "type": "double_elimination"}
             ],
             "poker": [
-                {"name": "Poker Night", "date": "03-05-2025", "time": "9:00 PM", "entry_fee": "$20", "prize": "$1000 Pot"}
+                {"name": "Poker Night", "date": "2025-03-05", "time": "9:00 PM", "entry_fee": "$20", "prize": "$1000 Pot", "max_players": 6, "type": "round_robin"}
             ]
         }
+
 
         # Dictionary of open campaign sessions at the cafe: {game_name: [list of campaigns]}
         self.campaigns = {

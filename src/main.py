@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication
 import view.main_window as mw  
 import controller.controller as ctr 
 
+
 """
 This is the main file from which the program runs
 """

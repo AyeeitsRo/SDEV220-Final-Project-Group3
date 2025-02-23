@@ -1,4 +1,5 @@
 from view.menu import MenuWindow
+from model.order import *
 from view.tournament_display import TournamentDisplay
 from view.game_library_display import GameDisplay
 from model.current_events import CurrentEvents
@@ -13,6 +14,7 @@ class Controller:
     def __init__(self):
         """Initialize the controller and load current events."""
         self.events = CurrentEvents() # Class in model/current_events.py
+        self.order = Order() # Class in model/order.py
 
     def open_game_library(self):
         """Opens the Game Library window."""
@@ -31,10 +33,6 @@ class Controller:
         print("Café Menu opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
         self.menu_window = MenuWindow(self) # Class in view/menu.py
         self.menu_window.show() # Opens the GUI window
-
-    def add_to_cart(self, item_name, item_price):
-        """Adds item to the cart in menu.py"""
-        print(f"{item_name} successfully added to the cart. \n Total: {item_price}")
 
     def on_game_clicked(self, game_name):
         """Opens the Events Display for a specific game.
@@ -92,3 +90,23 @@ class Controller:
             # TODO: Implement database storage or UI update here
         else:
             print("Event not found. Ensure the event name is correct.")
+            
+    def add_to_cart(self, item):
+        """Adds item to the cart in menu.py"""
+        # Check if the item already exists in the cart
+        found = False
+        for cart_item in order.items:
+            if cart_item.name == item.name:  # Compare based on item name or unique identifier
+                cart_item.quantity += 1  # Increment the quantity
+                found = True
+                break
+
+        if not found:
+            # If the item doesn't exist, add it to the cart as a new item
+            order.add_item(item)
+
+        self.menu_window.update_cart_ui()  # Update the cart UI after adding the item
+
+
+
+    

@@ -1,3 +1,8 @@
+'''
+File: order.py
+Creates classes for food and drink items. Creates child class Order that utilizes FoodItem and DrinkItem.
+With preset items, adds totaling functionality as well as cart functionality.
+'''
 
 SALES_TAX = 1.07 # State sales tax constant variable
 
@@ -38,11 +43,11 @@ class Order:
         for item in self.items:
             total += item.price * item.quantity
         taxed_total: float = total * SALES_TAX
-        return f"{taxed_total:.2f}"
+        return taxed_total
     
-    def add_item(self, item, quantity) -> None:
+    def add_item(self, item) -> None:
         """Add an item to user order"""
-        item.quantity = quantity
+        item.quantity = 1
         self.items.append(item)
         self.total = self.add_total
         
@@ -81,7 +86,6 @@ order = Order()
 """
 Example below of order output along with total
 **RUN CODE TO SEE OUTPUT**
-CURRENTLY IN PROCESS OF DEBUGGING
 
 # Attempting to add items to user order
 order.add_item(LATTE, quantity=1)

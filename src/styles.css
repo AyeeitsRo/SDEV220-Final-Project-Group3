@@ -79,3 +79,27 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: none;
 }
+
+/* General Table Styling */
+QTableWidget {
+    border: 2px solid #8b0000;
+    background-color: #201212;
+    color: white;
+    padding: 5px;
+    min-height: 100px;
+}
+
+/* Table Header Styling */
+QHeaderView::section {
+    color: white;
+    font-weight: bold;
+    background-color: #8b0000;
+    border-bottom: 2px solid #ff5555;
+    padding: 5px;
+}
+
+/* Row Height Adjustment */
+QTableWidget::item {
+    padding: 5px, 5px; /* Adjust spacing inside table cells */
+    min-height: 30px;
+}

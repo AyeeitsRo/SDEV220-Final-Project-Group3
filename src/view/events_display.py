@@ -1,33 +1,22 @@
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QPushButton, QScrollArea, QFrame
+    QWidget, QVBoxLayout, QLabel, QPushButton, QScrollArea, QFrame, QLineEdit, QMessageBox
 )
 from PyQt6.QtCore import Qt
 from model.current_events import CurrentEvents
+import sqlite3
 
 class EventsDisplay(QWidget):
     """
-    A window that displays upcoming tournaments and campaign sessions for a specific game at the cafe.
-
-    Attributes:
-        game_name (str): The name of the game for which events are displayed.
-        events (CurrentEvents): An instance of CurrentEvents used to fetch tournament and campaign data.
-        main_layout (QVBoxLayout): The main layout of the window.
-        event_layout (QVBoxLayout): The layout inside the scrollable area that contains event widgets.
+    A window that displays upcoming tournaments and campaign sessions
     """
 
     def __init__(self, game_name, controller):
-        """
-        Initializes the event display for a specific game.
-
-        Args:
-            game_name (str): The name of the game for which events should be displayed.
-        """
         super().__init__()
         self.controller = controller
         self.setWindowTitle(f"{game_name.capitalize()} - Events at the Cafe")
         self.setGeometry(200, 200, 500, 600)
 
-        self.events = CurrentEvents()  # Load event data
+        self.events = CurrentEvents()  # Load events from the database
         self.game_name = game_name
 
         # Main Layout
@@ -53,7 +42,7 @@ class EventsDisplay(QWidget):
         self.setLayout(self.main_layout)
 
     def load_events(self):
-        """Loads tournaments and campaign sessions for the selected game and displays them in the UI."""
+        """Loads tournaments and campaigns from the database and displays them."""
         tournaments = self.events.get_tournaments(self.game_name)
         campaigns = self.events.get_campaigns(self.game_name)
 
@@ -74,16 +63,7 @@ class EventsDisplay(QWidget):
             self.event_layout.addWidget(event_widget)
 
     def create_event_widget(self, event, event_type):
-        """
-        Creates a widget for a tournament or campaign with a sign-up button.
-
-        Args:
-            event (dict): Dictionary containing event details.
-            event_type (str): Either "tournament" or "campaign".
-
-        Returns:
-            QWidget: A styled widget displaying the event details.
-        """
+        """Creates a UI widget for a tournament or campaign."""
         frame = QFrame()
         frame.setStyleSheet("background-color: #201212; border: 2px solid #8b0000; border-radius: 10px; padding: 10px;")
         layout = QVBoxLayout()
@@ -98,11 +78,11 @@ class EventsDisplay(QWidget):
         date_time.setStyleSheet("font-size: 14px; color: #ffffff;")
         layout.addWidget(date_time)
 
-        # Additional Details
+        # Extra Information
         if event_type == "tournament":
             extra_info = QLabel(f"💰 Entry Fee: {event['entry_fee']} | 🏆 Prize: {event['prize']}")
         else:
-            extra_info = QLabel(f"🎲 DM: {event['dm']} | 👥 Players Needed: {event['players_needed']}")
+            extra_info = QLabel(f"🎲 DM: {event['host']} | 👥 Max Players: {event['max_players']}")
         extra_info.setStyleSheet("font-size: 13px; color: #cccccc;")
         layout.addWidget(extra_info)
 
@@ -127,22 +107,15 @@ class EventsDisplay(QWidget):
                 border: 2px solid #cc0000;
             }
         """)
-        # Above is styled here due to css not styling instances/loops
-        signup_button.clicked.connect(lambda: self.controller.on_signup(event, event_type))
+        signup_button.clicked.connect(lambda: self.controller.on_signup(event["name"], event_type))
         layout.addWidget(signup_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
         frame.setLayout(layout)
         return frame
 
-
 class AllEventsDisplay(QWidget):
     """
-    A window that displays all upcoming tournaments and campaigns at the cafe.
-
-    Attributes:
-        events (CurrentEvents): An instance of CurrentEvents used to fetch event data.
-        main_layout (QVBoxLayout): The main layout of the window.
-        event_layout (QVBoxLayout): The layout inside the scrollable area that contains event widgets.
+    A window that displays all upcoming tournaments and campaigns.
     """
 
     def __init__(self, controller):
@@ -151,8 +124,6 @@ class AllEventsDisplay(QWidget):
         self.controller = controller
         self.setWindowTitle("All Events at the Cafe")
         self.setGeometry(200, 200, 600, 700)
-
-        self.events = CurrentEvents()  # Load all event data
 
         # Main Layout
         self.main_layout = QVBoxLayout()
@@ -171,58 +142,65 @@ class AllEventsDisplay(QWidget):
         scroll_area.setWidget(event_container)
         self.main_layout.addWidget(scroll_area)
 
-        # Load and Display Events
+        # Load and Display Events from Database
         self.load_all_events()
         self.setLayout(self.main_layout)
 
     def load_all_events(self):
-        """Loads all tournaments and campaign sessions from CurrentEvents, grouped by game."""
-        all_events = {}
+        """Loads all tournaments and campaigns from the database."""
+        conn = sqlite3.connect("src/game_cafe.db")
+        cursor = conn.cursor()
 
-        # Organize events by game
-        for game, tournaments in self.events.tournaments.items():
-            if game not in all_events:
-                all_events[game] = []
-            for t in tournaments:
-                all_events[game].append((t, "tournament"))
+        # Fetch all active tournaments
+        cursor.execute("SELECT event_name, game_type, event_type, date, time, entry_fee, prize, max_players FROM active_tournaments")
+        tournaments = cursor.fetchall()
 
-        for game, campaigns in self.events.campaigns.items():
-            if game not in all_events:
-                all_events[game] = []
-            for c in campaigns:
-                all_events[game].append((c, "campaign"))
+        # Fetch all active campaigns
+        cursor.execute("SELECT campaign_name, game_type, host, meet_day, meet_frequency, time, max_players FROM active_campaigns")
+        campaigns = cursor.fetchall()
 
-        if not all_events:
+        conn.close()
+
+        if not tournaments and not campaigns:
             no_event_label = QLabel("No upcoming events at the cafe.")
             no_event_label.setStyleSheet("font-size: 14px; color: gray;")
             self.event_layout.addWidget(no_event_label, alignment=Qt.AlignmentFlag.AlignCenter)
             return
 
-        # Add events grouped by game
-        for game, events in all_events.items():
-            game_label = QLabel(game.capitalize())
-            game_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #ff5555; margin-top: 10px;")
-            self.event_layout.addWidget(game_label)
+        # Add tournaments to UI
+        for tournament in tournaments:
+            event_widget = self.create_tournament_widget(tournament)
+            self.event_layout.addWidget(event_widget)
 
-            for event, event_type in events:
-                event_widget = self.create_event_widget(event, event_type)
-                self.event_layout.addWidget(event_widget)
+        # Add campaigns to UI
+        for campaign in campaigns:
+            event_widget = self.create_campaign_widget(campaign)
+            self.event_layout.addWidget(event_widget)
 
-    def create_event_widget(self, event, event_type):
-        """Creates a widget for an event with a sign-up button."""
+    def create_tournament_widget(self, tournament):
+        """Creates a widget for a tournament with a sign-up button."""
         frame = QFrame()
         frame.setStyleSheet("background-color: #201212; border: 2px solid #8b0000; border-radius: 10px; padding: 10px;")
         layout = QVBoxLayout()
 
-        # Create Event UI (Similar to `EventsDisplay`)
-        title = QLabel(event["name"])
+        event_name, game_type, event_type, date, time, entry_fee, prize, max_players = tournament
+
+        # Title
+        title = QLabel(event_name)
         title.setStyleSheet("font-size: 16px; font-weight: bold; color: #ff5555;")
         layout.addWidget(title)
 
-        date_time = QLabel(f"📅 {event['date']} at {event.get('time', 'TBA')}")
+        # Date & Time
+        date_time = QLabel(f"📅 {date} at {time}")
         date_time.setStyleSheet("font-size: 14px; color: white;")
         layout.addWidget(date_time)
 
+        # Extra Info
+        extra_info = QLabel(f"🎮 {game_type} | 🏆 {event_type} | 💰 Entry Fee: {entry_fee} | Prize: {prize} | Max Players: {max_players}")
+        extra_info.setStyleSheet("font-size: 13px; color: #cccccc;")
+        layout.addWidget(extra_info)
+
+        # Sign-Up Button
         signup_button = QPushButton("Sign Up")
         signup_button.setStyleSheet("""
             QPushButton {
@@ -243,9 +221,135 @@ class AllEventsDisplay(QWidget):
                 border: 2px solid #cc0000;
             }
         """)
-        # Above is styled here due to css not styling instances/loops
-        signup_button.clicked.connect(lambda: self.controller.on_signup(event, event_type))
+        signup_button.clicked.connect(lambda: self.controller.on_signup(event_name, "tournament"))
         layout.addWidget(signup_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
         frame.setLayout(layout)
         return frame
+
+    def create_campaign_widget(self, campaign):
+        """Creates a widget for a campaign session with a sign-up button."""
+        frame = QFrame()
+        frame.setStyleSheet("background-color: #201212; border: 2px solid #8b0000; border-radius: 10px; padding: 10px;")
+        layout = QVBoxLayout()
+
+        campaign_name, game_type, host, meet_day, meet_frequency, time, max_players = campaign
+
+        # Title
+        title = QLabel(campaign_name)
+        title.setStyleSheet("font-size: 16px; font-weight: bold; color: #ff5555;")
+        layout.addWidget(title)
+
+        # Date & Time
+        date_time = QLabel(f"🗓 {meet_day}, {meet_frequency} | ⏰ {time}")
+        date_time.setStyleSheet("font-size: 14px; color: white;")
+        layout.addWidget(date_time)
+
+        # Extra Info
+        extra_info = QLabel(f"🎲 {game_type} | 🏅 DM: {host} | 👥 Players Needed: {max_players}")
+        # TODO: Retrieve list of players who are already signed up. Replace Players Needed to reflect max_players - current_players
+        extra_info.setStyleSheet("font-size: 13px; color: #cccccc;")
+        layout.addWidget(extra_info)
+
+        # Sign-Up Button
+        signup_button = QPushButton("Sign Up")
+        signup_button.setStyleSheet("""
+            QPushButton {
+                background-color: #8b0000;
+                color: white;
+                border: 2px solid #ff3333;
+                border-radius: 10px;
+                padding: 10px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #a00000;
+                border: 2px solid #ff5555;
+            }
+            QPushButton:pressed {
+                background-color: #6a0000;
+                border: 2px solid #cc0000;
+            }
+        """)
+        signup_button.clicked.connect(lambda: self.controller.on_signup(campaign_name, "campaign"))
+        layout.addWidget(signup_button, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        frame.setLayout(layout)
+        return frame
+
+class EventSignUp(QWidget):
+    """
+    This class creates a small window that and input method for users to enter their gamertag to sign up for events
+    This class also checks the database for existing users and updates the database with new successful registrations.
+    """
+    def __init__(self, controller, event_name, event_type):
+        """Initialize the sign-up form."""
+        super().__init__()
+        self.controller = controller
+        self.event_name = event_name
+        self.event_type = event_type
+        self.setWindowTitle("User Registration")
+        self.setGeometry(300, 200, 400, 300)
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.layout = QVBoxLayout(self)
+        signup_label = QLabel("Enter your gamertag to Sign Up!")
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText("Enter gamertag here...")
+
+        # Buttons
+        signup_button = QPushButton("Sign Up")
+        signup_button.clicked.connect(self.sign_up)
+        cancel_button = QPushButton("Cancel")
+        cancel_button.clicked.connect(self.close)
+
+        self.layout.addWidget(signup_label)
+        self.layout.addWidget(self.search_input)
+        self.layout.addWidget(signup_button)
+        self.layout.addWidget(cancel_button)
+
+    def sign_up(self):
+        """Handles sign-up logic."""
+        gamertag = self.search_input.text().strip()
+
+        # Make sure the field is filled out
+        if not gamertag:
+            QMessageBox.warning(self, "Error", "Gamertag cannot be empty!")
+            return
+
+        # Check if gamertag exists in database
+        if self.check_gamertag_exists(gamertag):
+            self.add_user_to_event(gamertag)
+        else:
+            QMessageBox.warning(self, "Error", "Gamertag not found. Please register first.")
+
+    def check_gamertag_exists(self, gamertag):
+        """Checks if a gamertag exists in the registered_users table."""
+        conn = sqlite3.connect("src/game_cafe.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM registered_users WHERE gamertag = ?", (gamertag,))
+        result = cursor.fetchone()
+        conn.close()
+        return result is not None  # Returns True if gamertag exists
+
+    def add_user_to_event(self, gamertag):
+        """Adds the user to the selected event."""
+        conn = sqlite3.connect("src/game_cafe.db")
+        cursor = conn.cursor()
+
+        # Check if user is already signed up
+        cursor.execute("SELECT 1 FROM event_signup WHERE gamertag = ? AND event_name = ?", (gamertag, self.event_name))
+        if cursor.fetchone():
+            QMessageBox.warning(self, "Error", "You are already signed up for this event!")
+            conn.close()
+            return
+
+        # Insert into signups table
+        cursor.execute("INSERT INTO event_signup (gamertag, event_name) VALUES (?, ?)", (gamertag, self.event_name))
+        conn.commit()
+        conn.close()
+
+        QMessageBox.information(self, "Success", f"Successfully signed up for {self.event_name}!")
+        self.close()

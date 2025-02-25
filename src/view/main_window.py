@@ -1,11 +1,13 @@
 from view.news_feed import NewsFeed
 from model.current_events import CurrentEvents
+from view.gamers import Registration
 from PyQt6.QtWidgets import (
     QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, 
-    QHBoxLayout, QListWidget, QListWidgetItem
+    QHBoxLayout, QListWidget, QListWidgetItem, QMessageBox
 )
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt, QTimer
+import sqlite3
 
 class MainWindow(QMainWindow):
     """
@@ -15,7 +17,7 @@ class MainWindow(QMainWindow):
     Attributes:
         controller (Controller): The main application controller.
         events (CurrentEvents): An instance of CurrentEvents to fetch event data.
-        event_list (list[dict]): A list of upcoming events at the cafe.
+        event_list (database query]): A list of upcoming events at the cafe.
         current_event_index (int): The index of the currently displayed event.
         timer (QTimer): Timer to cycle through events.
     """
@@ -135,15 +137,15 @@ class MainWindow(QMainWindow):
         right_side = QVBoxLayout(self.right_container)
         self.right_container.setStyleSheet("background-color: #201212; border: 3px solid #8b0000; border-radius: 10px; padding: 5px;")
 
-        self.right_label = QLabel("Some words here")
+        self.right_label = QLabel("Register to Play!")
         self.right_label.setFont(QFont("Arial", 16, QFont.Weight.Light))
         self.right_label.setStyleSheet("background-color: transparent; border: none;")
         self.right_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.profile_highlight = QListWidget()
+        self.form = Registration()
 
         right_side.addWidget(self.right_label)
-        right_side.addWidget(self.profile_highlight)
+        right_side.addWidget(self.form)
 
         # Main layout
         main_layout.addWidget(self.left_container, 2)
@@ -152,28 +154,39 @@ class MainWindow(QMainWindow):
 
     def get_all_events(self):
         """
-        Fetches all active cafe-hosted events (tournaments & campaigns).
-
-        Returns:
-            list[dict]: A list of events with event names and associated game names.
+        Gets all active cafe-hosted events (tournaments & campaigns) from the database.
         """
         event_messages = []
 
-        for game, tournaments in self.events.tournaments.items():
-            for t in self.events.get_tournaments(game):
-                event_messages.append({
-                    "name": f"🎮\n{t['name']}\n{t['date']}\n{t['time']}",
-                    "game_name": game
-                })
+        conn = sqlite3.connect("src/game_cafe.db")  # Relative path to database file
+        cursor = conn.cursor()
 
-        for game, campaigns in self.events.campaigns.items():
-            for c in self.events.get_campaigns(game):
-                event_messages.append({
-                    "name": f"📜\n{c['name']}\n(DM: {c['dm']})\n{c['date']} @ {c['time']}",
-                    "game_name": game
-                })
+        # Fetch all tournaments
+        cursor.execute("SELECT event_name, game_type, event_type, date, time FROM active_tournaments")
+        tournaments = cursor.fetchall()
 
+        # Fetch all campaigns
+        cursor.execute("SELECT campaign_name, game_type, host, meet_day, meet_frequency, time FROM active_campaigns")
+        campaigns = cursor.fetchall()
+
+        conn.close()
+
+        # Format tournaments for display
+        for event_name, game_type, event_type, date, time in tournaments:
+            event_messages.append({
+                "name": f"🎮\n{event_name}\n{date}\n{time}",
+                "game_name": game_type
+            })
+
+        # Format campaigns for display
+        for campaign_name, game_type, host, meet_day, meet_frequency, time in campaigns:
+            event_messages.append({
+                "name": f"📜\n{campaign_name}\n(DM: {host})\n{meet_day}, {meet_frequency} @ {time}",
+                "game_name": game_type
+            })
+        # Format a message if there are not any active events for the chosen game
         return event_messages if event_messages else [{"name": "No upcoming events at the cafe.", "game_name": None}]
+
 
     def update_active_events(self):
         """
@@ -193,7 +206,7 @@ class MainWindow(QMainWindow):
             # Cycle through events
             self.current_event_index = (self.current_event_index + 1) % len(self.event_list)
 
-        # Ensure the item click event is connected only once
+        # Ensure the item click event is connected only once, people be click happy
         if not hasattr(self, "event_connected"):
             self.active_events.itemClicked.connect(self.open_selected_event)
             self.event_connected = True 
@@ -201,10 +214,10 @@ class MainWindow(QMainWindow):
     def open_selected_event(self, item):
         """
         Opens the event display window when an event is clicked.
-
-        Args:
-            item (QListWidgetItem): The selected event item containing the game name.
         """
         game_name = item.data(Qt.ItemDataRole.UserRole)  
         if game_name:
+            print(f"Opening events for: {game_name}")  # Debugging
             self.controller.on_game_clicked(game_name)
+        else:
+            QMessageBox.warning(self, "Error", "No game associated with this event.")

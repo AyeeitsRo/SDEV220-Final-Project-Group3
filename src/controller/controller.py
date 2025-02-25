@@ -3,7 +3,7 @@ from model.order import *
 from view.tournament_display import TournamentDisplay
 from view.game_library_display import GameDisplay
 from model.current_events import CurrentEvents
-from view.events_display import EventsDisplay, AllEventsDisplay
+from view.events_display import EventsDisplay, AllEventsDisplay, EventSignUp
 
 class Controller:
     """
@@ -52,44 +52,9 @@ class Controller:
         self.all_events.show()  # Opens the GUI window
 
     def on_signup(self, event, event_type):
-        """
-        Handles user sign-up for a tournament or campaign.
-
-        Args:
-            event_name (str): The name of the event (tournament or campaign).
-            event_type (str): The type of event ('tournament' or 'campaign').
-        """
-        # If event is a dictionary, extract its name
-        event_name = event["name"] if isinstance(event, dict) else event
-
-        print(f"Attempting to sign up for: {event_name} ({event_type.capitalize()})")
-
-        # Fetch event details from CurrentEvents
-        current_events = CurrentEvents()
-
-        if event_type == "tournament":
-            events_list = current_events.tournaments
-        elif event_type == "campaign":
-            events_list = current_events.campaigns
-        else:
-            print("Invalid event type.")
-            return
-
-        # Find the specific event dictionary
-        event_details = None
-        for game, events in events_list.items():
-            for e in events:
-                if e["name"] == event_name:
-                    event_details = e
-                    break
-            if event_details:
-                break
-
-        if event_details:
-            print(f"User signed up for: {event_details['name']} ({event_type.capitalize()})")
-            # TODO: Implement database storage or UI update here
-        else:
-            print("Event not found. Ensure the event name is correct.")
+        """Opens the sign up windown for the user to sign up for the associated event."""
+        self.sign_up = EventSignUp(self, event, event_type) # Class in view/events_display.py
+        self.sign_up.show() # Opens the GUI window
             
     def add_to_cart(self, item):
         """Adds item to the cart in menu.py"""

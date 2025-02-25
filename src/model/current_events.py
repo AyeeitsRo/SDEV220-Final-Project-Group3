@@ -1,73 +1,97 @@
-from model.game_library import GameLibrary  # Import GameLibrary for images
+import sqlite3
 
 class CurrentEvents:
     """
-    A class to manage and retrieve cafe-hosted events, including tournaments and campaigns.
-    
-    Attributes:
-        tournaments (dict): A dictionary containing tournament data for each game.
-        campaigns (dict): A dictionary containing open campaign session data for each game.
+    A class to manage and retrieve events, including tournaments and campaigns.
     """
 
-    def __init__(self):
-        """Initializes the CurrentEvents class, loads tournament and campaign data. """
-
-        # Dictionary of cafe-hosted tournaments: {game_name: [list of tournaments]}
-        self.tournaments = {
-            "chess": [
-                {"name": "Cafe Chess Masters", "date": "2025-03-10", "time": "6:00 PM", "entry_fee": "$10", "prize": "$500", "max_players": 8, "type": "single_elimination"},
-                {"name": "Blitz Night", "date": "2025-03-15", "time": "8:00 PM", "entry_fee": "$5", "prize": "Free Drinks", "max_players": 4, "type": "round_robin"}
-            ],
-            "magic": [
-                {"name": "MTG Friday Night Magic", "date": "2025-03-22", "time": "7:00 PM", "entry_fee": "$15", "prize": "Store Credit", "max_players": 16, "type": "double_elimination"}
-            ],
-            "poker": [
-                {"name": "Poker Night", "date": "2025-03-05", "time": "9:00 PM", "entry_fee": "$20", "prize": "$1000 Pot", "max_players": 6, "type": "round_robin"}
-            ]
-        }
-
-
-        # Dictionary of open campaign sessions at the cafe: {game_name: [list of campaigns]}
-        self.campaigns = {
-            "dnd": [
-                {"name": "Lost Mine of Phandelver", "date": "02-20-2025", "time": "5:00 PM", "dm": "John", "players_needed": 2},
-                {"name": "Strixhaven Academy", "date": "03-02-2025", "time": "7:00 PM", "dm": "Sarah", "players_needed": 3}
-            ],
-            "warhammer": [
-                {"name": "Warhammer 40k: Cafe Battle", "date": "02-28-2025", "time": "6:30 PM", "dm": "Alex", "players_needed": 1}
-            ]
-        }
+    def __init__(self, db_path="src\game_cafe.db"):
+        """Initializes the CurrentEvents class and defines relative file path to database"""
+        self.db_path = db_path # assigns the database path to a variable to make for easier connections.
 
     def get_tournaments(self, game_name):
         """
-        Retrieves a list of upcoming cafe-hosted tournaments for a given game.
-        
-        Args:
-            game_name (str): The name of the game for which tournaments should be retrieved.
-        
-        Returns:
-            list[dict]: A list of dictionaries, each representing a tournament with details such as 
-                        name, date, time, entry fee, prize, and associated game image.
+        Searches the database in the active_tournaments table and returns the data stored for the given tournament
         """
-        game_name = game_name.lower()
-        tournaments = self.tournaments.get(game_name, [])  # Retrieve tournaments for the given game
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
 
+        cursor.execute("""
+            SELECT event_name, game_type, event_type, date, time, entry_fee, prize, max_players
+            FROM active_tournaments
+            WHERE game_type = ?
+        """, (game_name.lower(),))
+
+        tournaments = [
+            {
+                "name": row[0],
+                "game_type": row[1],
+                "type": row[2],
+                "date": row[3],
+                "time": row[4],
+                "entry_fee": row[5],
+                "prize": row[6],
+                "max_players": int(row[7]),
+            }
+            for row in cursor.fetchall()
+        ]
+
+        conn.close()
         return tournaments
 
     def get_campaigns(self, game_name):
         """
-        Retrieves a list of open cafe-hosted campaign sessions for a given game.
-        
-        Args:
-            game_name (str): The name of the game for which campaigns should be retrieved.
-        
-        Returns:
-            list[dict]: A list of dictionaries, each representing a campaign session with details such as 
-                        name, date, time, DM (Dungeon Master), and number of players needed.
+        Searches database table named active_campaigns, and gets a list of all active campaigns
         """
-        game_name = game_name.lower()
-        campaigns = self.campaigns.get(game_name, [])  # Retrieve campaigns for the given game
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
 
+        cursor.execute("""
+            SELECT campaign_name, game_type, host, meet_day, meet_frequency, time, max_players
+            FROM active_campaigns
+            WHERE game_type = ?
+        """, (game_name.lower(),))
+
+        campaigns = [
+            {
+                "name": row[0],
+                "game_type": row[1],
+                "host": row[2],
+                "meet_day": row[3],
+                "meet_frequency": row[4],
+                "time": row[5],
+                "max_players": int(row[6]),
+            }
+            for row in cursor.fetchall()
+        ]
+
+        conn.close()
         return campaigns
+    
+    def get_all_tournaments(self):
+        """Fetches all active tournaments from the database instead of just one"""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
 
+        cursor.execute("""
+            SELECT event_name, game_type, event_type, date, time, entry_fee, prize, max_players
+            FROM active_tournaments
+        """)
+
+        tournaments = [
+            {
+                "name": row[0],
+                "game_type": row[1],
+                "type": row[2],  
+                "date": row[3],
+                "time": row[4],
+                "entry_fee": row[5],
+                "prize": row[6],
+                "max_players": int(row[7])
+            }
+            for row in cursor.fetchall()
+        ]
+
+        conn.close()
+        return tournaments
 

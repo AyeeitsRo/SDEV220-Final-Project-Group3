@@ -21,5 +21,5 @@ if __name__ == "__main__":
     window = mw.MainWindow(controller)  # Create the window with controller
     window.show()  # Show the main window
     
-    sys.exit(app.exec())  # Start the event loop
+    sys.exit(app.exec())   # Start the event loop
 

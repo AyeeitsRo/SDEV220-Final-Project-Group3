@@ -73,16 +73,15 @@ class EventsDisplay(QWidget):
         title.setStyleSheet("font-size: 16px; font-weight: bold; color: #ff5555;")
         layout.addWidget(title)
 
-        # Date & Time
-        date_time = QLabel(f"📅 {event['date']} at {event.get('time', 'TBA')}")
-        date_time.setStyleSheet("font-size: 14px; color: #ffffff;")
-        layout.addWidget(date_time)
-
         # Extra Information
         if event_type == "tournament":
+            date_time = QLabel(f"📅 {event['date']} at {event['time']}")
             extra_info = QLabel(f"💰 Entry Fee: {event['entry_fee']} | 🏆 Prize: {event['prize']}")
         else:
+            date_time = QLabel(f"📅 {event['meet_day']}({event['meet_frequency']}) at {event['time']}")
             extra_info = QLabel(f"🎲 DM: {event['host']} | 👥 Max Players: {event['max_players']}")
+        date_time.setStyleSheet("font-size: 14px; color: #ffffff;")
+        layout.addWidget(date_time)
         extra_info.setStyleSheet("font-size: 13px; color: #cccccc;")
         layout.addWidget(extra_info)
 

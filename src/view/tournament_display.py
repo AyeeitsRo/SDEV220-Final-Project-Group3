@@ -95,7 +95,7 @@ class TournamentBracketDisplay(QWidget):
         container = QWidget()
         self.layout = QVBoxLayout(container)
 
-        # Generate bracket for Round Robin
+        # Generate bracket for tournaments
         tournament_type = tournament.get("type")
         max_players = tournament.get("max_players")
 
@@ -175,8 +175,112 @@ class TournamentBracketDisplay(QWidget):
             self.layout.addWidget(table)
 
 
-    def create_single_elimnation_bracket(self, tournament):
-        pass
+    def create_single_elimination_bracket(self, tournament):
+        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}") # Debugging
+        tournament.generate_rounds()
+        print(f"Rounds generated: {tournament.rounds}")  # Debugging
+        
+        if not tournament.rounds:
+            print("No rounds were generated. Ensure max_players is set correctly.")
+            return
+
+        for round_number, matchups in enumerate(tournament.rounds, start=1):
+            print(f"Round {round_number}: {matchups}")  # Debugging
+            round_label = QLabel(f"Round {round_number}")
+            round_label.setStyleSheet("font-size: 16px; font-weight: bold; margin-top: 10px;")
+            self.layout.addWidget(round_label)
+
+            table = QTableWidget()
+            table.setColumnCount(4)
+            table.setRowCount(len(matchups))
+
+            # Set Headers
+            headers = ["Player 1", "Player 2", "Winner", "Table Number"]
+            for col, header_text in enumerate(headers):
+                table.setHorizontalHeaderItem(col, QTableWidgetItem(header_text))
+
+            # Header Visibility
+            table.horizontalHeader().setVisible(True)
+            table.verticalHeader().setVisible(False)
+
+            # Header Sizing
+            table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+            table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+            table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+
+            for row, match in enumerate(matchups):
+                table.setItem(row, 0, QTableWidgetItem(match["p1"]))
+                table.setItem(row, 1, QTableWidgetItem(match["p2"]))
+                table.setItem(row, 3, QTableWidgetItem(str(match["table"])))
+
+                # Winner Button
+                winner_button = QPushButton("Set Winner")
+                winner_button.setStyleSheet("""
+                    background-color: #ff5555;
+                    color: white;
+                    font-size: 12px;
+                    font-weight: bold;
+                    border-radius: 5px;
+                    padding: 1px, 1px;
+                    min-height: 15px;
+                """)
+                table.setCellWidget(row, 2, winner_button)
+
+            # Force UI Update
+            table.viewport().update()
+            self.layout.addWidget(table)
 
     def create_double_elimination_bracket(self, tournament):
-        pass
+        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}") # Debugging
+        tournament.generate_rounds()
+        print(f"Rounds generated: {tournament.rounds}")  # Debugging
+        
+        if not tournament.rounds:
+            print("No rounds were generated. Ensure max_players is set correctly.")
+            return
+
+        for round_number, matchups in enumerate(tournament.rounds, start=1):
+            print(f"Round {round_number}: {matchups}")  # Debugging
+            round_label = QLabel(f"Round {round_number}")
+            round_label.setStyleSheet("font-size: 16px; font-weight: bold; margin-top: 10px;")
+            self.layout.addWidget(round_label)
+
+            table = QTableWidget()
+            table.setColumnCount(4)
+            table.setRowCount(len(matchups))
+
+            # Set Headers
+            headers = ["Player 1", "Player 2", "Winner", "Table Number"]
+            for col, header_text in enumerate(headers):
+                table.setHorizontalHeaderItem(col, QTableWidgetItem(header_text))
+
+            # Header Visibility
+            table.horizontalHeader().setVisible(True)
+            table.verticalHeader().setVisible(False)
+
+            # Header Sizing
+            table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+            table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+            table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+
+            for row, match in enumerate(matchups):
+                table.setItem(row, 0, QTableWidgetItem(match["p1"]))
+                table.setItem(row, 1, QTableWidgetItem(match["p2"]))
+                table.setItem(row, 3, QTableWidgetItem(str(match["table"])))
+
+                # Winner Button
+                winner_button = QPushButton("Set Winner")
+                winner_button.setStyleSheet("""
+                    background-color: #ff5555;
+                    color: white;
+                    font-size: 12px;
+                    font-weight: bold;
+                    border-radius: 5px;
+                    padding: 1px, 1px;
+                    min-height: 15px;
+                """)
+                table.setCellWidget(row, 2, winner_button)
+
+            # Force UI Update
+            table.viewport().update()
+            self.layout.addWidget(table)

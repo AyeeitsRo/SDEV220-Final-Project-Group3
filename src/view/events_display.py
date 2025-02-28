@@ -70,6 +70,7 @@ class EventsDisplay(QWidget):
 
         # Title
         title = QLabel(event["name"])
+        
         title.setStyleSheet("font-size: 16px; font-weight: bold; color: #ff5555;")
         layout.addWidget(title)
 
@@ -122,7 +123,7 @@ class AllEventsDisplay(QWidget):
         super().__init__()
         self.controller = controller
         self.setWindowTitle("All Events at the Cafe")
-        self.setGeometry(200, 200, 600, 700)
+        self.setGeometry(200, 200, 800, 550)
 
         # Main Layout
         self.main_layout = QVBoxLayout()

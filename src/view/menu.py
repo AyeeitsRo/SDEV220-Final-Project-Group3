@@ -1,7 +1,7 @@
-# MAIN CODE CURRENT
 
+from view.cart_popup import *
 from model.order import *      
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QScrollArea, QListWidget
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QScrollArea
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QPixmap
 
@@ -12,7 +12,7 @@ class MenuWindow(QWidget):
         self.setWindowTitle("Cafe Menu")
         self.setGeometry(100, 100, 900, 700)
         self.setStyleSheet("background-color: black;")
-        
+
         # Create the layout for the window
         menu_layout = QVBoxLayout()
 
@@ -25,7 +25,7 @@ class MenuWindow(QWidget):
 
         # Create a horizontal layout to separate left and right sections
         menu_h_layout = QHBoxLayout()
-        
+
         # Left side (Drink and Food Items)
         left_frame = QFrame()
         left_frame.setStyleSheet("background-color: black; border-radius: 10px;")
@@ -36,9 +36,8 @@ class MenuWindow(QWidget):
         drink_section.setStyleSheet("color: white; font-size: 18px;")
         left_layout.addWidget(drink_section)
 
-        # Add drinks to the layout (use your pre-defined variables like BLACK_COFFEE)
+        # Add drinks to the layout 
         drinks = [BLACK_COFFEE, LATTE, CAPPUCCINO, ORANGE_JUICE]
-        
         for drink in drinks:
             drink_item_frame = self.create_item_frame(drink)
             left_layout.addWidget(drink_item_frame)
@@ -50,19 +49,18 @@ class MenuWindow(QWidget):
 
         # Add food to the layout
         foods = [CAKE_POP, CROISSANT, COFFEE_CAKE, CHOC_CHIP_COOKIE]
-        
         for food in foods:
             food_item_frame = self.create_item_frame(food)
             left_layout.addWidget(food_item_frame)
 
-        # Right side (Cart Area) - Adding a red border here
+        # Right side (Cart Area)
         right_frame = QFrame()
-        right_frame.setStyleSheet("background-color: black; border: 2px solid red; border-radius: 10px;")  # Red border added for cart
+        right_frame.setStyleSheet("background-color: black; border: 2px solid red; border-radius: 10px;")
         right_layout = QVBoxLayout(right_frame)
-        right_frame.setMaximumWidth(300) 
+        right_frame.setMaximumWidth(300)
 
         # Cart section
-        self.cart_display = QVBoxLayout()  # Cart items will be added here
+        self.cart_display = QVBoxLayout()  
         right_layout.addLayout(self.cart_display)
 
         # Left Scroll area
@@ -86,11 +84,18 @@ class MenuWindow(QWidget):
         # Add the horizontal layout to the main layout
         menu_layout.addLayout(menu_h_layout)
 
+        # Create the 'View Cart' button
+        view_cart_button = QPushButton("View Cart")
+        view_cart_button.setStyleSheet("background-color: red; color: white; border-radius: 5px; padding: 10px;")
+        view_cart_button.clicked.connect(self.open_cart_popup)  # Open the cart popup when clicked
+
+        menu_layout.addWidget(view_cart_button)
+
         # Set the layout for the window
         self.setLayout(menu_layout)
 
     def create_item_frame(self, item):
-        # Frame to hold each item, with red border only on the item itself
+        # Frame to hold each item
         item_frame = QFrame()
         item_frame.setStyleSheet("border: 1px solid red; border-radius: 10px; background-color: black; padding: 5px;")
         item_layout = QHBoxLayout(item_frame)
@@ -100,7 +105,7 @@ class MenuWindow(QWidget):
         pixmap = QPixmap(item.photo)
         pixmap = pixmap.scaled(QSize(50, 50), Qt.AspectRatioMode.KeepAspectRatio)  # Resize image
         image_label.setPixmap(pixmap)
-        
+
         # Item Name and Price
         item_info = QLabel(f"{item.name}\n${item.price:.2f}")
         item_info.setStyleSheet("color: white; font-size: 14px;")
@@ -119,8 +124,7 @@ class MenuWindow(QWidget):
 
     def update_cart_ui(self):
         """Updates the cart display when an item is added to the cart."""
-        
-        # Clear the current cart display (clear all widgets)
+        # Clear the current cart display
         for i in reversed(range(self.cart_display.count())):
             widget = self.cart_display.itemAt(i).widget()
             if widget is not None:
@@ -133,12 +137,12 @@ class MenuWindow(QWidget):
             item_label.setStyleSheet("color: white; font-size: 18px;")
             self.cart_display.addWidget(item_label)  # Add to the cart section
 
-        # Add a label to display the total price of the cart
-        total_label = QLabel(f"Total: ${float(order.add_total):.2f}")
-        total_label.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
-        self.cart_display.addWidget(total_label)  # Add total price label to the cart section
-        
         # Set maximum width for the cart display to prevent overflow
         self.cart_display.setSizeConstraint(QVBoxLayout.SizeConstraint.SetFixedSize)
         self.cart_display.setContentsMargins(5, 5, 5, 5)  # Add some margins to avoid widgets touching the edges
+
+    def open_cart_popup(self):
+        """Opens the cart popup window."""
+        self.cart_popup = CartDetailWindow(self, self.update_cart_ui)  # Pass the callback to update cart UI when closed
+        self.cart_popup.exec()
 

@@ -102,7 +102,7 @@ class PaymentWindow(QDialog):
         """Handles the payment."""
         if self.payment_method.currentText() == "Cash":
             # For Cash: Show the message "Pay at the counter"
-            self.show_popup("Thank you for your order!\nPlease pay at the counter.")  # Show the pop-up for Cash option
+            self.show_popup("Thank you for your payment!\nPlease pay at the counter.")  # Show the pop-up for Cash option
             self.accept()  # Close the window (or proceed as needed)
         elif self.payment_method.currentText() == "Debit/Credit":
             # For Debit/Credit: Proceed with card validation and payment
@@ -113,7 +113,7 @@ class PaymentWindow(QDialog):
 
             # Validate all fields before processing payment
             if self.validate_fields(card_number, expiration_date, cvv, name):
-                self.show_popup("Thank you for your order!\nIt is currently being made!")  # Show pop-up with customer's name
+                self.show_popup("Thank you for your payment!\nIt is currently being made!")  # Show pop-up with customer's name
                 self.accept()  # Proceed to payment processing (close the window)
 
     def validate_fields(self, card_number, expiration_date, cvv, name):
@@ -121,6 +121,7 @@ class PaymentWindow(QDialog):
 
         # Check if the card number is valid
         if len(card_number) != 16 or not card_number.isdigit():
+            # Possible TODO: Call to Credit Card Verification Class for extra Verification
             self.show_error_message("Card number must be 16 digits.")
             return False
 

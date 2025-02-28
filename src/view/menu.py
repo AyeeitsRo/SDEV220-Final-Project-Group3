@@ -134,6 +134,7 @@ class MenuWindow(QWidget):
         for item in order.items:
             # Create labels for the item name, quantity, and price
             item_label = QLabel(f"{item.name} - {item.quantity} x ${item.price:.2f}")
+            item_label.setWordWrap(True)
             item_label.setStyleSheet("color: white; font-size: 18px;")
             self.cart_display.addWidget(item_label)  # Add to the cart section
 

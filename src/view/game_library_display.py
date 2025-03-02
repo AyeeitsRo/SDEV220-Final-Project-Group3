@@ -26,7 +26,7 @@ class GameDisplay(QWidget):
         super().__init__()
         self.controller = controller
         self.setWindowTitle("Game Library")
-        self.setGeometry(100, 100, 900, 650)
+        self.setGeometry(100, 100, 900, 800)
         
         self.library_layout = QVBoxLayout()
 

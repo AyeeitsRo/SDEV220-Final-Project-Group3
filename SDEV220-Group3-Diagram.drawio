@@ -1,0 +1,273 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
+  <diagram name="Page-1" id="yU_qxhrx_Z8n4ybSCS6d">
+    <mxGraphModel dx="4126" dy="1653" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-1" value="&lt;b&gt;main.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="40" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-3" value="&lt;b&gt;controller.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="150" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-4" value="&lt;i&gt;class Controlle&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;r&lt;/span&gt;&lt;/i&gt;&lt;div&gt;&lt;i&gt;&lt;br&gt;&lt;/i&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&#39;manages the interactions between buttons pressed within the GUI&#39;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-3">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-5" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="WjeWf2aqBgbBdGQONwXw-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="91" as="sourcePoint" />
+            <mxPoint x="370" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-6" value="Main calls Controller to open GUI" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-5">
+          <mxGeometry x="-0.0508" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-7" value="&lt;b&gt;main_window.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="320" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-8" value="&lt;i&gt;class MainWindow&lt;/i&gt;&lt;div&gt;&lt;i&gt;&lt;br&gt;&lt;/i&gt;&lt;div&gt;&#39;initalizes main window that is a menu to the different parts of the program&#39;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-7">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-10" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-4" target="WjeWf2aqBgbBdGQONwXw-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="290" as="sourcePoint" />
+            <mxPoint x="370" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-11" value="Controller calls MainWindow to display" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-10">
+          <mxGeometry x="0.0267" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-12" value="&lt;b&gt;tournament_display.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="620" width="160" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-13" value="&lt;i&gt;class TournamentDisplay&lt;/i&gt;&lt;div&gt;&lt;i&gt;class TournamentBracket Display&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;initalizes tournament display as well as the display of brackets used for each individual tournament&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-12">
+          <mxGeometry y="50" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-14" value="&lt;b&gt;menu.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="510" width="160" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-15" value="&lt;i&gt;class MenuWindow&lt;/i&gt;&lt;div&gt;&lt;i&gt;&lt;br&gt;&lt;/i&gt;&lt;div&gt;&#39;initalizes menu window display menu of items as well as a cart displaying items chosen&#39;&lt;/div&gt;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-14">
+          <mxGeometry y="50" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-16" value="&lt;b&gt;game_library_display.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-10" y="620" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-17" value="&lt;i&gt;class GameDisplay&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;initalizes game display showing each type of game the cafe offers&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-16">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-19" value="&lt;b&gt;event_display.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="510" width="160" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-20" value="&lt;i&gt;class EventsDisplay&lt;/i&gt;&lt;div&gt;&lt;i&gt;class AllEventsDisplay&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;initalizes the event display with all event coming up at the cafe&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-19">
+          <mxGeometry y="50" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-24" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-8" target="WjeWf2aqBgbBdGQONwXw-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="480" as="sourcePoint" />
+            <mxPoint x="400" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-29" value="Opens tournaments when&amp;nbsp;&lt;div&gt;&quot;Tournaments&quot; is pressed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-24">
+          <mxGeometry x="0.0157" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-25" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-8" target="WjeWf2aqBgbBdGQONwXw-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="480" as="sourcePoint" />
+            <mxPoint x="400" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-28" value="Opens menu when&amp;nbsp;&lt;div&gt;&quot;Cafe Menu&quot; is pressed&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-25">
+          <mxGeometry x="-0.1292" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-27" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-8" target="WjeWf2aqBgbBdGQONwXw-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="480" as="sourcePoint" />
+            <mxPoint x="400" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-35" value="Opens event display when&lt;div&gt;&quot;View All Events&quot; is pressed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-27">
+          <mxGeometry x="0.024" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-33" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-8" target="WjeWf2aqBgbBdGQONwXw-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="530" as="sourcePoint" />
+            <mxPoint x="280" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-34" value="Opens game library when&amp;nbsp;&lt;div&gt;&quot;Game Library&quot; is pressed&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-33">
+          <mxGeometry x="-0.0608" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-38" value="&lt;b&gt;current_events.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="320" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-39" value="&lt;i&gt;class CurrentEvents&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;used to display the current events on the bottom left of the main window&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-38">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-44" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-8" target="WjeWf2aqBgbBdGQONwXw-39">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="220" as="sourcePoint" />
+            <mxPoint x="590" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-45" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-44">
+          <mxGeometry x="0.04" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-50" value="Calls CurrentEvents&lt;div&gt;to display current&lt;/div&gt;&lt;div&gt;events at the cafe&lt;/div&gt;&lt;div&gt;one at a time on a&amp;nbsp;&lt;/div&gt;&lt;div&gt;timer&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-44">
+          <mxGeometry x="0.1015" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-46" value="&lt;b&gt;news_feed.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-130" y="320" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-47" value="&lt;i&gt;class NewsFeed&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;used to display the current news in gaming at the top left of main window&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-46">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-48" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-47" target="WjeWf2aqBgbBdGQONwXw-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="390" as="sourcePoint" />
+            <mxPoint x="140" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-49" value="Calls NewsFeed to&lt;div&gt;display current news&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-48">
+          <mxGeometry x="-0.0067" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-52" value="&lt;b&gt;cart_popup.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="720" width="160" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-53" value="&lt;i&gt;class CartDetailWindow&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;initalizes cart window where you can choose to go forward and pay, remove items from cart, or leave&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-52">
+          <mxGeometry y="50" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-54" value="&lt;b&gt;payment_popup.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="930" width="160" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-55" value="&lt;i&gt;class PaymentWindow&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;initalizes payment window where you can choose to pay in cash or with debit/credit&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-54">
+          <mxGeometry y="50" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-61" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-15" target="WjeWf2aqBgbBdGQONwXw-52">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="810" y="650" as="sourcePoint" />
+            <mxPoint x="1050" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-67" value="Calls CartDetailWindow to display&lt;div&gt;items in cart&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-61">
+          <mxGeometry x="-0.0588" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-62" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-54" target="WjeWf2aqBgbBdGQONwXw-53">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="890" y="740" as="sourcePoint" />
+            <mxPoint x="1050" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-68" value="Calls PaymentWindow displaying&lt;div&gt;a choice for how a user will pay&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-62">
+          <mxGeometry x="-0.0754" relative="1" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-63" value="&lt;b&gt;gamers.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="120" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-64" value="&lt;i&gt;class Registration&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;used to display the registration for users on the right of the main window, stores information in database&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-63">
+          <mxGeometry y="50" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-65" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-7" target="WjeWf2aqBgbBdGQONwXw-64">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="250" as="sourcePoint" />
+            <mxPoint x="430" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-66" value="Calls Registration&lt;div&gt;to display the&amp;nbsp;&lt;/div&gt;&lt;div&gt;registration features&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-65">
+          <mxGeometry x="0.0075" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-69" value="&lt;b&gt;tournament.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="860" width="180" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-70" value="&lt;i&gt;class Tournament&lt;/i&gt;&lt;div&gt;&lt;i&gt;class SingleEliminationTournament&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i&gt;class DoubleEliminationTournament&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;i&gt;class RoundRobinTournament&lt;/i&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;Displays tournament based on tournament type&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-69">
+          <mxGeometry y="50" width="180" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-71" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-13" target="WjeWf2aqBgbBdGQONwXw-69">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="820" as="sourcePoint" />
+            <mxPoint x="450" y="920" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-72" value="Calls based on chosen type" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-71">
+          <mxGeometry x="-0.0206" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-73" value="&lt;b&gt;game_library.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-10" y="830" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-74" value="&lt;i&gt;class GameLibrary&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;holds all types of games in library including their pictures&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-73">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-75" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-17" target="WjeWf2aqBgbBdGQONwXw-73">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-20" y="780" as="sourcePoint" />
+            <mxPoint x="140" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-76" value="Calls GameLibrary to&amp;nbsp;&lt;div&gt;the display different&lt;div&gt;games within library&lt;/div&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-75">
+          <mxGeometry x="-0.0292" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-77" value="&lt;b&gt;current_events.py&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="730" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-78" value="&lt;i&gt;class CurrentEvents&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&#39;used to display the current events on the bottom left of the main window&#39;&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-77">
+          <mxGeometry y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-79" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-20" target="WjeWf2aqBgbBdGQONwXw-77">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="490" as="sourcePoint" />
+            <mxPoint x="200" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-80" value="Calls CurrentEvents to&amp;nbsp;&lt;div&gt;display events at cafe&lt;/div&gt;&lt;div&gt;in a list&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-79">
+          <mxGeometry x="-0.1524" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-81" value="&lt;b&gt;styles.css&lt;/b&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-130" y="90" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-82" value="&#39;initalized and called in main to handle some of the GUI&#39;s display.&#39;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" vertex="1" parent="WjeWf2aqBgbBdGQONwXw-81">
+          <mxGeometry y="50" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-83" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="WjeWf2aqBgbBdGQONwXw-1" target="WjeWf2aqBgbBdGQONwXw-81">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="140" as="sourcePoint" />
+            <mxPoint x="160" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjeWf2aqBgbBdGQONwXw-84" value="Opened and read&lt;div&gt;in main.py&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WjeWf2aqBgbBdGQONwXw-83">
+          <mxGeometry x="0.016" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

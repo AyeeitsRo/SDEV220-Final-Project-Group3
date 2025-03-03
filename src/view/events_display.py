@@ -367,14 +367,14 @@ class EventSignUp(QWidget):
             return
 
         # Check if user is already signed up
-        cursor.execute("SELECT 1 FROM event_signup WHERE user_id = ? AND event_name = ?", (user_id, self.event_name))
+        cursor.execute("SELECT 1 FROM event_signup WHERE gamertag = ? AND event_name = ?", (user_id, self.event_name))
         if cursor.fetchone():
             QMessageBox.warning(self, "Error", "You are already signed up for this event!")
             conn.close()
             return
 
         # Insert into signups table
-        cursor.execute("INSERT INTO event_signup (user_id, event_name) VALUES (?, ?)", (user_id, self.event_name))
+        cursor.execute("INSERT INTO event_signup (gamertag, event_name) VALUES (?, ?)", (user_id, self.event_name))
         conn.commit()
         conn.close()
 

@@ -1,9 +1,10 @@
 from view.menu import MenuWindow
 from model.order import *
-from view.tournament_display import TournamentDisplay
+from view.tournament_display import TournamentDisplay, TournamentBracketDisplay
 from view.game_library_display import GameDisplay
 from model.current_events import CurrentEvents
 from view.events_display import EventsDisplay, AllEventsDisplay, EventSignUp
+
 
 class Controller:
     """
@@ -24,9 +25,10 @@ class Controller:
 
     def open_tournaments(self):
         """Opens the Tournaments window."""
-        print("Tournaments opened")  # Debugging tool, if this function is successfully called, this line will print to the terminal
-        self.tournament_view = TournamentDisplay(self) # Class in view/tournament_display.py
-        self.tournament_view.show() # Opens the GUI window
+        print("Tournaments opened")
+        self.tournament_view = TournamentDisplay(self)  # Pass controller
+        self.tournament_view.show()
+
 
     def open_cafe_menu(self):
         """Opens the Cafe Menu window."""

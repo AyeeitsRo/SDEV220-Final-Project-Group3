@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTableWidget, 
-    QTableWidgetItem, QFrame, QHeaderView, QScrollArea
+    QTableWidgetItem, QFrame, QHeaderView, QScrollArea, QButtonGroup, QRadioButton
 )
 from PyQt6.QtCore import Qt
 from model.current_events import CurrentEvents
@@ -66,24 +66,46 @@ class TournamentDisplay(QWidget):
         container.setLayout(container_layout)
         self.tournament_layout.addWidget(container)
 
-    def view_bracket(self, tournament):
-        """Opens the tournament bracket window."""
-        max_players = tournament["max_players"]
-        self.bracket_window = TournamentBracketDisplay(self, tournament)
+    def view_bracket(self, tournament_dict):
+        """Opens the tournament bracket window with a proper Tournament instance."""
+
+        # Convert dictionary to the appropriate Tournament instance
+        tournament_name = tournament_dict["name"]
+        tournament_type = tournament_dict["type"]
+        max_players = int(tournament_dict["max_players"])
+
+        if tournament_type == "single_elimination":
+            tournament_instance = SingleEliminationTournament(tournament_name, max_players)
+        elif tournament_type == "double_elimination":
+            tournament_instance = DoubleEliminationTournament(tournament_name, max_players)
+        elif tournament_type == "round_robin":
+            tournament_instance = RoundRobinTournament(tournament_name, max_players)
+        else:
+            print(f"❌ Error: Invalid tournament type '{tournament_type}'")
+            return
+
+        # Pass the tournament instance instead of the dictionary
+        self.bracket_window = TournamentBracketDisplay(tournament_instance)
         self.bracket_window.show()
 
 
+
 class TournamentBracketDisplay(QWidget):
-    def __init__(self, parent, tournament):
+    def __init__(self, tournament):
         """Displays the tournament bracket."""
         super().__init__()
-        self.parent = parent
-        self.setWindowTitle(f"{tournament['name']} - Bracket")
+
+        if isinstance(tournament, dict):
+            print("❌ Error: Expected a Tournament instance but received a dictionary!")
+            return
+        
+        self.tournament = tournament
+        self.setWindowTitle(f"{tournament.name} - Bracket")
         self.setGeometry(200, 200, 700, 500)
 
         main_layout = QVBoxLayout()
 
-        title = QLabel(f"{tournament['name']} - Bracket")
+        title = QLabel(f"{tournament.name} - Bracket")
         title.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 10px;")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(title)
@@ -95,22 +117,16 @@ class TournamentBracketDisplay(QWidget):
         container = QWidget()
         self.layout = QVBoxLayout(container)
 
-        # Generate bracket for tournaments
-        tournament_type = tournament.get("type")
-        max_players = tournament.get("max_players")
-
-        if tournament_type == "round_robin":
-            tournament_instance = RoundRobinTournament(tournament['name'], int(max_players))
-            self.create_round_robin_bracket(tournament_instance)
-        elif tournament_type == "single_elimination":
-            tournament_instance = SingleEliminationTournament(tournament['name'], int(max_players))
-            self.create_single_elimination_bracket(tournament_instance)
-        elif tournament_type == "double_elimination":
-            tournament_instance = DoubleEliminationTournament(tournament['name'], int(max_players))
-            self.create_double_elimination_bracket(tournament_instance)
-
         scroll_area.setWidget(container)
         main_layout.addWidget(scroll_area)
+
+        if isinstance(self.tournament, RoundRobinTournament):
+            self.create_round_robin_bracket(self.tournament)
+        elif isinstance(self.tournament, SingleEliminationTournament):
+            self.create_single_elimination_bracket(self.tournament)
+        elif isinstance(self.tournament, DoubleEliminationTournament):
+            self.create_double_elimination_bracket(self.tournament)
+
         # Add Close button to return to tournament display
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.close)
@@ -158,18 +174,26 @@ class TournamentBracketDisplay(QWidget):
                 table.setItem(row, 1, QTableWidgetItem(match["p2"]))
                 table.setItem(row, 3, QTableWidgetItem(str(match["table"])))
 
-                # Winner Button
-                winner_button = QPushButton("Set Winner")
-                winner_button.setStyleSheet("""
-                    background-color: #ff5555;
-                    color: white;
-                    font-size: 12px;
-                    font-weight: bold;
-                    border-radius: 5px;
-                    padding: 1px, 1px;
-                    min-height: 15px;
-                """)
-                table.setCellWidget(row, 2, winner_button)
+                # Add a Winner Button for Manual Winner Entry
+                # Create a button group so only one can be selected
+                winner_group = QButtonGroup(table)
+    
+                # Radio buttons for each player
+                p1_button = QRadioButton(match["p1"])
+                p2_button = QRadioButton(match["p2"])
+
+                # Add them to the button group (so only one can be selected at a time)
+                winner_group.addButton(p1_button)
+                winner_group.addButton(p2_button)
+
+                # Connect selection to set_winner method
+                p1_button.toggled.connect(lambda checked, r=round_number, m=match, p=match["p1"]: self.tournament.set_winner(r, m, p) if checked else None)
+                p2_button.toggled.connect(lambda checked, r=round_number, m=match, p=match["p2"]: self.tournament.set_winner(r, m, p) if checked else None)
+
+
+                # Add to the table
+                table.setCellWidget(row, 2, p1_button)
+                table.setCellWidget(row, 3, p2_button)
 
             # Force UI Update
             table.viewport().update()
@@ -214,18 +238,25 @@ class TournamentBracketDisplay(QWidget):
                 table.setItem(row, 0, QTableWidgetItem(match["p1"]))
                 table.setItem(row, 1, QTableWidgetItem(match["p2"]))
 
-                # Winner Button
-                winner_button = QPushButton("Set Winner")
-                winner_button.setStyleSheet("""
-                    background-color: #ff5555;
-                    color: white;
-                    font-size: 12px;
-                    font-weight: bold;
-                    border-radius: 5px;
-                    padding: 1px, 1px;
-                    min-height: 15px;
-                """)
-                table.setCellWidget(row, 2, winner_button)
+                # Add a Winner Button for Manual Winner Entry
+                # Create a button group so only one can be selected
+                winner_group = QButtonGroup(table)
+    
+                # Radio buttons for each player
+                p1_button = QRadioButton(match["p1"])
+                p2_button = QRadioButton(match["p2"])
+
+                # Add them to the button group (so only one can be selected at a time)
+                winner_group.addButton(p1_button)
+                winner_group.addButton(p2_button)
+
+                # Connect selection to set_winner method
+                p1_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p1"]) if checked else None)
+                p2_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p2"]) if checked else None)
+
+                # Add to the table
+                table.setCellWidget(row, 2, p1_button)
+                table.setCellWidget(row, 3, p2_button)
 
             # Force UI Update
             table.viewport().update()
@@ -277,17 +308,24 @@ class TournamentBracketDisplay(QWidget):
                     table.setItem(row, 2, QTableWidgetItem(winner))
 
                     # Add a Winner Button for Manual Winner Entry
-                    winner_button = QPushButton("Set Winner")
-                    winner_button.setStyleSheet("""
-                        background-color: #ff5555;
-                        color: white;
-                        font-size: 12px;
-                        font-weight: bold;
-                        border-radius: 5px;
-                        padding: 1px, 1px;
-                        min-height: 15px;
-                    """)
-                    table.setCellWidget(row, 2, winner_button)
+                    # Create a button group so only one can be selected
+                    winner_group = QButtonGroup(table)
+    
+                    # Radio buttons for each player
+                    p1_button = QRadioButton(match["p1"])
+                    p2_button = QRadioButton(match["p2"])
+
+                    # Add them to the button group (so only one can be selected at a time)
+                    winner_group.addButton(p1_button)
+                    winner_group.addButton(p2_button)
+
+                    # Connect selection to set_winner method
+                    p1_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p1"]) if checked else None)
+                    p2_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p2"]) if checked else None)
+
+                    # Add to the table
+                    table.setCellWidget(row, 2, p1_button)
+                    table.setCellWidget(row, 3, p2_button)
                 else:
                     print(f"❌ Unexpected match format: {match}")  # Debugging
 

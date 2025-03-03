@@ -280,9 +280,10 @@ class AllEventsDisplay(QWidget):
 
 class EventSignUp(QWidget):
     """
-    This class creates a small window that and input method for users to enter their gamertag to sign up for events
-    This class also checks the database for existing users and updates the database with new successful registrations.
+    This class creates a small window with an input method for users to enter their gamertag to sign up for events.
+    It checks the database for existing users and updates the database with successful registrations.
     """
+
     def __init__(self, controller, event_name, event_type):
         """Initialize the sign-up form."""
         super().__init__()
@@ -294,6 +295,7 @@ class EventSignUp(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
+        """Sets up the UI elements."""
         self.layout = QVBoxLayout(self)
         signup_label = QLabel("Enter your gamertag to Sign Up!")
         self.search_input = QLineEdit()
@@ -319,35 +321,60 @@ class EventSignUp(QWidget):
             QMessageBox.warning(self, "Error", "Gamertag cannot be empty!")
             return
 
-        # Check if gamertag exists in database
-        if self.check_gamertag_exists(gamertag):
-            self.add_user_to_event(gamertag)
-        else:
-            QMessageBox.warning(self, "Error", "Gamertag not found. Please register first.")
+        # Get user_id from registered_users
+        user_id = self.get_user_id(gamertag)
 
-    def check_gamertag_exists(self, gamertag):
-        """Checks if a gamertag exists in the registered_users table."""
+        if user_id is None:
+            QMessageBox.warning(self, "Error", "Gamertag not found. Please register first.")
+            return
+
+        # Attempt to add user to event
+        self.add_user_to_event(user_id)
+
+    def get_user_id(self, gamertag):
+        """Retrieves user_id from registered_users based on gamertag."""
         conn = sqlite3.connect("src/game_cafe.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT 1 FROM registered_users WHERE gamertag = ?", (gamertag,))
-        result = cursor.fetchone()
+        cursor.execute("SELECT id FROM registered_users WHERE gamertag = ?", (gamertag,))
+        user_id = cursor.fetchone()
         conn.close()
-        return result is not None  # Returns True if gamertag exists
+        return user_id[0] if user_id else None  # Returns user_id if found
 
-    def add_user_to_event(self, gamertag):
+    def add_user_to_event(self, user_id):
         """Adds the user to the selected event."""
         conn = sqlite3.connect("src/game_cafe.db")
         cursor = conn.cursor()
 
+        # Check current signups for the event
+        cursor.execute("SELECT COUNT(*) FROM event_signup WHERE event_name = ?", (self.event_name,))
+        current_signups = cursor.fetchone()[0]
+
+        # Get max_players for this event
+        cursor.execute("SELECT max_players FROM active_tournaments WHERE event_name = ?", (self.event_name,))
+        max_players = cursor.fetchone()
+
+        if max_players is None:
+            QMessageBox.warning(self, "Error", "Event not found!")
+            conn.close()
+            return
+
+        max_players = int(max_players[0])  # Extract integer value
+
+        # Check if event is full
+        if current_signups >= max_players:
+            QMessageBox.warning(self, "Error", "This event is already full!")
+            conn.close()
+            return
+
         # Check if user is already signed up
-        cursor.execute("SELECT 1 FROM event_signup WHERE gamertag = ? AND event_name = ?", (gamertag, self.event_name))
+        cursor.execute("SELECT 1 FROM event_signup WHERE user_id = ? AND event_name = ?", (user_id, self.event_name))
         if cursor.fetchone():
             QMessageBox.warning(self, "Error", "You are already signed up for this event!")
             conn.close()
             return
 
         # Insert into signups table
-        cursor.execute("INSERT INTO event_signup (gamertag, event_name) VALUES (?, ?)", (gamertag, self.event_name))
+        cursor.execute("INSERT INTO event_signup (user_id, event_name) VALUES (?, ?)", (user_id, self.event_name))
         conn.commit()
         conn.close()
 

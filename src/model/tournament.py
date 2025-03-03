@@ -33,15 +33,33 @@ class Tournament:
         if not winner_gamertag or winner_gamertag == "Select Winner":
             return
 
+        # Find the exact match object from self.rounds before modifying it
+        if round_number >= len(self.rounds):
+            print(f"❌ Error: Round {round_number} does not exist!")
+            return
+
+        round_matches = self.rounds[round_number]
+
+        # Ensure match exists in the current round
+        match_index = None
+        for i, stored_match in enumerate(round_matches):
+            if stored_match["p1"] == match["p1"] and stored_match["p2"] == match["p2"]:
+                match_index = i
+                break
+
+        if match_index is None:
+            print(f"❌ Error: Match ({match['p1']} vs {match['p2']}) not found in round {round_number}")
+            return
+
         # Determine the loser
         loser_gamertag = match["p1"] if match["p2"] != winner_gamertag else match["p2"]
 
-        # Update current match
-        match["winner"] = winner_gamertag
+        # Update match winner
+        round_matches[match_index]["winner"] = winner_gamertag
 
         # Move the winner to the next round
         if round_number + 1 < len(self.rounds):
-            next_match_index = self.rounds[round_number].index(match) // 2
+            next_match_index = match_index // 2  # Find correct match index in the next round
             if self.rounds[round_number + 1][next_match_index]["p1"] == "TBD":
                 self.rounds[round_number + 1][next_match_index]["p1"] = winner_gamertag
             else:
@@ -51,7 +69,8 @@ class Tournament:
         if isinstance(self, DoubleEliminationTournament):
             self.move_to_losers_bracket(loser_gamertag, round_number)
 
-        print(f"✅ Winner '{winner_gamertag}' has been set for Round {round_number}!")
+        print(f"✅ Winner '{winner_gamertag}' set for Round {round_number}!")
+
 
 
     def move_to_losers_bracket(self, loser_gamertag, round_num):

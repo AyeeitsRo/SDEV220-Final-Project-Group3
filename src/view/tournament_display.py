@@ -272,8 +272,8 @@ class TournamentBracketDisplay(QWidget):
             return
 
         # Iterate through rounds (each round will be displayed separately)
-        for round_number, round_info in enumerate(tournament.rounds, start=1):
-            print(f"Round {round_number}: {round_info['matches']}")  # Debugging
+        for round_number, matchups in enumerate(tournament.rounds, start=1):
+            print(f"Round {round_number}: {matchups}")  # Debugging
 
             # Section Label for the Round
             round_label = QLabel(f"🛡️ Round {round_number}")
@@ -284,7 +284,7 @@ class TournamentBracketDisplay(QWidget):
             # Create Table
             table = QTableWidget()
             table.setColumnCount(3)  # Player 1, Player 2, Winner
-            table.setRowCount(len(round_info["matches"]))
+            table.setRowCount(len(matchups))
 
             # Set Headers
             headers = ["Player 1", "Player 2", "Winner"]
@@ -297,7 +297,7 @@ class TournamentBracketDisplay(QWidget):
             table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
             # Populate Table with Matches
-            for row, match in enumerate(round_info["matches"]):
+            for row, match in enumerate(matchups):
                 if isinstance(match, dict):
                     player1 = str(match.get("p1", "TBD"))
                     player2 = str(match.get("p2", "TBD"))

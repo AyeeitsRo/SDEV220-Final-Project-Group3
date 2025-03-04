@@ -42,7 +42,7 @@ class Tournament:
         round_matches = self.rounds[round_number]
 
         # Ensure match exists in the current round
-        match_index = None
+        match_index = round_number
         for i, stored_match in enumerate(round_matches):
             if stored_match["p1"] == match["p1"] and stored_match["p2"] == match["p2"]:
                 match_index = i

@@ -1,5 +1,6 @@
 import sqlite3
 from PyQt6.QtWidgets import QMessageBox
+import math
 
 class Tournament:
     """Base tournament class for different formats."""

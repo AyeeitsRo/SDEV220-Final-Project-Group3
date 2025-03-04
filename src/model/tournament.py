@@ -128,7 +128,7 @@ class SingleEliminationTournament(Tournament):
     def generate_rounds(self):
         """Creates an initial single-elimination bracket structure."""
         self.rounds = []
-        num_rounds = int(math.log2(self.max_players)) + 1  # Total rounds including finals
+        num_rounds = int(math.log2(self.max_players))  # Total rounds including finals
 
         # First round: Assign actual players
         first_round = []

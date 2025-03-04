@@ -332,7 +332,7 @@ class TournamentBracketDisplay(QWidget):
             # Add Table to Layout
             table.viewport().update()
             self.layout.addWidget(table)
-
+        """
         # **Grand Finals**
         if hasattr(tournament, "grand_finals"):
             final_label = QLabel("🏆 Grand Finals")
@@ -353,3 +353,4 @@ class TournamentBracketDisplay(QWidget):
 
             self.layout.addWidget(final_table)
 
+        """

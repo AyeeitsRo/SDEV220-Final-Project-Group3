@@ -1,6 +1,6 @@
 from view.menu import MenuWindow
 from model.order import *
-from view.tournament_display import TournamentDisplay, TournamentBracketDisplay
+from view.tournament_display import TournamentDisplay
 from view.game_library_display import GameDisplay
 from model.current_events import CurrentEvents
 from view.events_display import EventsDisplay, AllEventsDisplay, EventSignUp

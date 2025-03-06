@@ -173,7 +173,7 @@ class TournamentBracketDisplay(QWidget):
                 table.setItem(row, 0, QTableWidgetItem(match["p1"]))
                 table.setItem(row, 1, QTableWidgetItem(match["p2"]))
                 table.setItem(row, 3, QTableWidgetItem(str(match["table"])))
-
+            """
                 # Add a Winner Button for Manual Winner Entry
                 # Create a button group so only one can be selected
                 winner_group = QButtonGroup(table)
@@ -194,6 +194,7 @@ class TournamentBracketDisplay(QWidget):
                 # Add to the table
                 table.setCellWidget(row, 2, p1_button)
                 table.setCellWidget(row, 3, p2_button)
+            """
 
             # Force UI Update
             table.viewport().update()
@@ -237,7 +238,7 @@ class TournamentBracketDisplay(QWidget):
             for row, match in enumerate(matchups):
                 table.setItem(row, 0, QTableWidgetItem(match["p1"]))
                 table.setItem(row, 1, QTableWidgetItem(match["p2"]))
-
+            """
                 # Add a Winner Button for Manual Winner Entry
                 # Create a button group so only one can be selected
                 winner_group = QButtonGroup(table)
@@ -257,6 +258,7 @@ class TournamentBracketDisplay(QWidget):
                 # Add to the table
                 table.setCellWidget(row, 2, p1_button)
                 table.setCellWidget(row, 3, p2_button)
+            """
 
             # Force UI Update
             table.viewport().update()
@@ -306,7 +308,7 @@ class TournamentBracketDisplay(QWidget):
                     table.setItem(row, 0, QTableWidgetItem(player1))
                     table.setItem(row, 1, QTableWidgetItem(player2))
                     table.setItem(row, 2, QTableWidgetItem(winner))
-
+                """
                     # Add a Winner Button for Manual Winner Entry
                     # Create a button group so only one can be selected
                     winner_group = QButtonGroup(table)
@@ -326,9 +328,10 @@ class TournamentBracketDisplay(QWidget):
                     # Add to the table
                     table.setCellWidget(row, 2, p1_button)
                     table.setCellWidget(row, 3, p2_button)
+                
                 else:
                     print(f"❌ Unexpected match format: {match}")  # Debugging
-
+                """
             # Add Table to Layout
             table.viewport().update()
             self.layout.addWidget(table)

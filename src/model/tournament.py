@@ -27,15 +27,15 @@ class Tournament:
         conn.close()
         
         return players if players else []
-
+    """
     def set_winner(self, round_number, match, winner_gamertag):
-        """Sets the winner for a match and updates the tournament bracket."""
+        #Sets the winner for a match and updates the tournament bracket.
 
         if not winner_gamertag or winner_gamertag == "Select Winner":
             return
-
+        
         # Find the exact match object from self.rounds before modifying it
-        if round_number >= len(self.rounds):
+        if round_number > len(self.rounds):
             print(f"❌ Error: Round {round_number} does not exist!")
             return
 
@@ -56,6 +56,9 @@ class Tournament:
         loser_gamertag = match["p1"] if match["p2"] != winner_gamertag else match["p2"]
 
         # Update match winner
+        print("Round Matches:", round_matches)
+        print("Match Index:", match_index)
+        print("Both Round Matches and Match Index:", round_matches[match_index])
         round_matches[match_index]["winner"] = winner_gamertag
 
         # Move the winner to the next round
@@ -75,7 +78,7 @@ class Tournament:
 
 
     def move_to_losers_bracket(self, loser_gamertag, round_num):
-        """Moves a losing player to the losers' bracket in a double elimination tournament."""
+        #Moves a losing player to the losers' bracket in a double elimination tournament.
         if round_num < len(self.losers_bracket):  # Ensure the losers' bracket exists
             next_match_index = len(self.losers_bracket[round_num]) // 2
             
@@ -85,7 +88,7 @@ class Tournament:
                     self.losers_bracket[round_num][next_match_index]["p1"] = loser_gamertag
                 else:
                     self.losers_bracket[round_num][next_match_index]["p2"] = loser_gamertag
-
+    """
 
 class SingleEliminationTournament(Tournament):
     """Single elimination format: lose once = eliminated."""
@@ -265,7 +268,7 @@ class RoundRobinTournament(Tournament):
         
         num_rounds = len(players) - 1
         for round_num in range(num_rounds):
-            round_matches = [{"p1": players[match_num], "p2": players[-(match_num + 1)], "winner": None, "table": (match_num % 2) + 1}
+            round_matches = [{"p1": players[match_num], "p2": players[-(match_num + 1)], "winner": None, "table": (match_num % 2)}
                              for match_num in range(len(players) // 2)]
             self.rounds.append(round_matches)
 

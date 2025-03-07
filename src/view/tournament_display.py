@@ -246,315 +246,367 @@ class TournamentDisplay(QWidget):
         self.bracket_window = TournamentBracketDisplay(tournament_instance)  # Instantiate bracket display
         self.bracket_window.show()  # Open the tournament bracket window
 
-
 class TournamentBracketDisplay(QWidget):
+    """
+    **Class Purpose:**
+    - Displays the tournament bracket for an active tournament.
+    - Dynamically generates and formats the bracket layout based on the tournament type.
+    - Provides an interactive display where users can view matchups.
+    
+    **Why This Class Exists:**
+    - Each tournament type (single elimination, double elimination, round robin) has a different bracket structure.
+    - The display needs to be dynamically created based on tournament data.
+    - Users should be able to visually follow tournament progress.
+    
+    **Implementation Decisions:**
+    - Uses a `QVBoxLayout` to organize the tournament bracket visually.
+    - Includes a scroll area to accommodate large brackets.
+    - Calls the appropriate function based on the tournament type.
+    """
+    
     def __init__(self, tournament):
-        """Displays the tournament bracket."""
+        """
+        **Initializes the bracket display window.**
+        **Parameters:**
+        - `tournament` (Tournament): An instance of the selected tournament, containing match data.
+        """
         super().__init__()
-
-        # Make sure the tournament data was sent as an instance and not as a dictionary
+        
+        # Validate Tournament Instance
         if isinstance(tournament, dict):
             print("❌ Error: Expected a Tournament instance but received a dictionary!")
-            return
+            return  # Prevent further execution if incorrect data type is received
         
-        # Create Window for bracket
-        self.tournament = tournament
-        self.setWindowTitle(f"{tournament.name} - Bracket")
-        self.setGeometry(200, 200, 700, 500)
-
-        # Main layout
+        # Configure Window
+        self.tournament = tournament  # Store the tournament instance
+        self.setWindowTitle(f"{tournament.name} - Bracket")  # Set the window title dynamically
+        self.setGeometry(200, 200, 700, 500)  # Set window size
+        
+        # Create Main Layout
         main_layout = QVBoxLayout()
-
-        # Title in main layout, which will be the name of the tournament
-        title = QLabel(f"{tournament.name} - Bracket")
-        title.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 10px;")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        main_layout.addWidget(title)
-
-        # Scroll Area
-        scroll_area = QScrollArea(self)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        container = QWidget()
-        self.layout = QVBoxLayout(container)
-
-        # Add the scroll area to the container and main layout
-        scroll_area.setWidget(container)
-        main_layout.addWidget(scroll_area)
-
-        # Check that the data from each tournament-type class is also an instance
-        # Send to the appropriate bracket function according to the type of tournament
+        
+        # Add Tournament Title
+        title = QLabel(f"{tournament.name} - Bracket")  # Create a title label
+        title.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 10px;")  # Style the title
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center align the title
+        main_layout.addWidget(title)  # Add title to layout
+        
+        # Add Scroll Area
+        scroll_area = QScrollArea(self)  # Create a scroll area for large brackets
+        scroll_area.setWidgetResizable(True)  # Allow resizing to fit content
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)  # Enable scroll bar if needed
+        container = QWidget()  # Create a container for the bracket layout
+        self.layout = QVBoxLayout(container)  # Use vertical layout inside the scroll area
+        scroll_area.setWidget(container)  # Attach container to scroll area
+        main_layout.addWidget(scroll_area)  # Add scroll area to main layout
+        
+        # Generate the Tournament Bracket
+        # Determine the tournament type and generate the correct bracket
         if isinstance(self.tournament, RoundRobinTournament):
             self.create_round_robin_bracket(self.tournament)
         elif isinstance(self.tournament, SingleEliminationTournament):
             self.create_single_elimination_bracket(self.tournament)
         elif isinstance(self.tournament, DoubleEliminationTournament):
             self.create_double_elimination_bracket(self.tournament)
-
-        # Add Close button to return to tournament display
-        close_button = QPushButton("Close")
-        close_button.clicked.connect(self.close)
-        main_layout.addWidget(close_button, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        # Set the main layout to the window
+        
+        # Add Close Button
+        close_button = QPushButton("Close")  # Create a close button
+        close_button.clicked.connect(self.close)  # Connect button to close the window
+        main_layout.addWidget(close_button, alignment=Qt.AlignmentFlag.AlignCenter)  # Add button to layout
+        
+        # Set the final layout to the window
         self.setLayout(main_layout)
 
-    def create_round_robin_bracket(self, tournament):
-        """Displays a round-robin tournament bracket using rounds from the Tournament instance."""
 
-        # Debugging tools below help to check that the data for the tournament was successfully obtained and passed
-        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}") # Debugging
-        # Call to the generate rounds function to add all the necessary rounds for the tournament
-        tournament.generate_rounds()
-        print(f"Rounds generated: {tournament.rounds}")  # Debugging
+    def create_round_robin_bracket(self, tournament):
+        """
+        **Displays a round-robin tournament bracket using rounds from the Tournament instance.**
         
-        # If no rounds were generated, this decision statement is ran
+        **Why This Function Exists:**
+        - Round-robin tournaments require a structured display to show all matchups.
+        - Tournament rounds must be generated dynamically based on the number of players.
+        - The match table must be visually formatted for clarity.
+        
+        **Implementation Decisions:**
+        - Calls `generate_rounds()` to ensure matchups are created before display.
+        - Uses a `QTableWidget` for structured data presentation.
+        - Applies different styling to improve readability.
+        
+        **Parameters:**
+        - `tournament` (RoundRobinTournament): The tournament instance containing match data.
+        
+        **Step-by-Step Explanation:**
+        1️⃣ **Step 1 - Generate Tournament Rounds**
+           - Calls `generate_rounds()` to create matchups.
+        
+        2️⃣ **Step 2 - Check if Rounds Exist**
+           - If no rounds were generated, exit early to avoid errors.
+        
+        3️⃣ **Step 3 - Iterate Over Each Round**
+           - Create a visual representation for each round.
+           - `enumerate()` is used to automatically generate the round number while iterating. (enumerate is used for iterating in pairs)
+           - This ensures each round is properly labeled without manually tracking the index.
+        
+        4️⃣ **Step 4 - Create and Style Round Labels**
+           - Adds a label to indicate the current round number.
+        
+        5️⃣ **Step 5 - Create the Match Table**
+           - Generates a `QTableWidget` to structure the match data.
+        
+        6️⃣ **Step 6 - Populate Match Table**
+           - Inserts player names and table numbers into the table.
+        
+        7️⃣ **Step 7 - Update and Display Table**
+           - Ensures the UI updates correctly and adds the table to the layout.
+        """
+        
+        # Step 1 - Generate Tournament Rounds
+        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}")  # Debugging
+        tournament.generate_rounds()  # Generate the rounds for the tournament
+        print(f"Rounds generated: {tournament.rounds}")  # Debugging output displays number of rounds
+        
+        # Step 2 - Check if Rounds Exist
         if not tournament.rounds:
             print("No rounds were generated. Ensure max_players is set correctly.")
-            return
-
-        # Iterate through each pair of objects: round number and matchups (the players assigned to compete), for each round
-        # Create a label to display the data for each iteration
+            return  # Exit if no rounds were created
+        
+        # Step 3 - Iterate Over Each Round and Matchup
         for round_number, matchups in enumerate(tournament.rounds, start=1):
-            print(f"Round {round_number}: {matchups}")  # Debugging, shows the round number and players that were passed
-            # Create the label for the round number
-            round_label = QLabel(f"🛡️ Round {round_number}")
-            round_label.setStyleSheet("font-size: 20px; font-weight: bold; margin-top: 15px; color: #ffcc00;")
-            round_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.layout.addWidget(round_label)
-            # Create a table for the round
-            table = QTableWidget()
-            table.setColumnCount(4)
-            table.setRowCount(len(matchups)) # The number of rows are dependant on the number of matchups there are in a round
-
-            # Set Headers for the table
-            headers = ["Player 1", "Player 2", "Winner", "Table Number"] 
-            # Iterate through the pairs col (column number) and header_text and pass the headers list through to be assigned as a header in the table
-            for col, header_text in enumerate(headers):
+            print(f"Round {round_number}: {matchups}")  # Debugging output
+            
+            # Step 4 - Create and Style Round Labels
+            round_label = QLabel(f"🛡️ Round {round_number}")  # Create label
+            round_label.setStyleSheet("font-size: 20px; font-weight: bold; margin-top: 15px; color: #ffcc00;")  # Style label
+            round_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center-align label
+            self.layout.addWidget(round_label)  # Add label to layout
+            
+            # Step 5 - Create the Round Table
+            table = QTableWidget()  # Create table
+            table.setColumnCount(4)  # Define number of columns
+            table.setRowCount(len(matchups))  # Set number of rows to match number of matchups
+            
+            # Set Headers for the Table
+            headers = ["Player 1", "Player 2", "Winner", "Table Number"]  # Column headers
+            for col, header_text in enumerate(headers):  # Assign headers to table
                 table.setHorizontalHeaderItem(col, QTableWidgetItem(header_text))
-
-            # Set the Header Visibility
-            table.horizontalHeader().setVisible(True)
-            table.verticalHeader().setVisible(False)
-
-            # Set the Header Sizing
+            
+            # Step 6 - Style and Populate Match Table
+            table.horizontalHeader().setVisible(True)  # Show headers
+            table.verticalHeader().setVisible(False)  # Hide vertical headers
             table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
             table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
             table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
-
-            # Iterate through the pairs row (row number) and match, and pass through each matchup (the players competing in that match/round)
-            # Put each player and the assigned table number that they will sit at in the cafe into the table
+            
             for row, match in enumerate(matchups):
-                table.setItem(row, 0, QTableWidgetItem(match["p1"]))
-                table.setItem(row, 1, QTableWidgetItem(match["p2"]))
-                table.setItem(row, 3, QTableWidgetItem(str(match["table"])))
-            """
-                # Add a Winner Button for Manual Winner Entry
-                # Create a button group so only one can be selected
-                winner_group = QButtonGroup(table)
-    
-                # Radio buttons for each player
-                p1_button = QRadioButton(match["p1"])
-                p2_button = QRadioButton(match["p2"])
-
-                # Add them to the button group (so only one can be selected at a time)
-                winner_group.addButton(p1_button)
-                winner_group.addButton(p2_button)
-
-                # Connect selection to set_winner method
-                p1_button.toggled.connect(lambda checked, r=round_number, m=match, p=match["p1"]: self.tournament.set_winner(r, m, p) if checked else None)
-                p2_button.toggled.connect(lambda checked, r=round_number, m=match, p=match["p2"]: self.tournament.set_winner(r, m, p) if checked else None)
-
-
-                # Add to the table
-                table.setCellWidget(row, 2, p1_button)
-                table.setCellWidget(row, 3, p2_button)
-            """
-
-            # Force UI Update so that the headers will show in the table, otherwise they will not show
-            table.viewport().update()
-            # Add to the table
-            self.layout.addWidget(table)
-
+                table.setItem(row, 0, QTableWidgetItem(match["p1"]))  # Player 1
+                table.setItem(row, 1, QTableWidgetItem(match["p2"]))  # Player 2
+                table.setItem(row, 3, QTableWidgetItem(str(match["table"])))  # Table Number
+            
+            # Step 7 - Update and Display Table
+            table.viewport().update()  # Force UI refresh (otherwise the table will not show)
+            self.layout.addWidget(table)  # Add table to layout
 
     def create_single_elimination_bracket(self, tournament):
-        """ Displays a single elimination tournament bracket for any tournament listed as a single elimination """
-        # Debugging below prints tournament data to ensure that the correct information was gathered.
-        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}") # Debugging
-        # Call to the generate rounds function for this tournament
-        tournament.generate_rounds()
-        print(f"Rounds generated: {tournament.rounds}")  # Debugging shows the number of rounds that were created.
+        """
+        **Displays a single elimination tournament bracket using rounds from the Tournament instance.**
         
-        # If no rounds are generated, this decision statement will run.
+        **Why This Function Exists:**
+        - Single elimination tournaments require a structured bracket display.
+        - Tournament rounds must be dynamically generated based on the number of players.
+        - The match table must be visually formatted for clarity.
+        
+        **Implementation Decisions:**
+        - Calls `generate_rounds()` to ensure matchups are created before display.
+        - Uses a `QTableWidget` for structured data presentation.
+        - Applies different styling to improve readability.
+        
+        **Parameters:**
+        - `tournament` (SingleEliminationTournament): The tournament instance containing match data.
+        
+        **Step-by-Step Explanation:**
+        1️⃣ **Step 1 - Generate Tournament Rounds**
+           - Calls `generate_rounds()` to create matchups.
+        
+        2️⃣ **Step 2 - Check if Rounds Exist**
+           - If no rounds were generated, exit early to avoid errors.
+        
+        3️⃣ **Step 3 - Iterate Over Each Round**
+           - Create a visual representation for each round.
+           - `enumerate()` is used to automatically generate the round number while iterating. (enumerate is used for iterating in pairs)
+           - This ensures each round is properly labeled without manually tracking the index.
+        
+        4️⃣ **Step 4 - Create and Style Round Labels**
+           - Adds a label to indicate the current round number.
+        
+        5️⃣ **Step 5 - Create the Match Table**
+           - Generates a `QTableWidget` to structure the match data.
+        
+        6️⃣ **Step 6 - Populate Match Table**
+           - Inserts player names and table numbers into the table.
+        
+        7️⃣ **Step 7 - Update and Display Table**
+           - Ensures the UI updates correctly and adds the table to the layout.
+        """
+        
+        # Step 1 - Generate Tournament Rounds
+        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}")  # Debugging
+        tournament.generate_rounds()  # Generate the rounds for the tournament
+        print(f"Rounds generated: {tournament.rounds}")  # Debugging output displays number of rounds
+        
+        # Step 2 - Check if Rounds Exist
         if not tournament.rounds:
             print("No rounds were generated. Ensure max_players is set correctly.")
-            return
-        # Iterate through each pair of objects: round number and matchups (the players assigned to compete), for each round
-        # Create a label to display the data for each iteration
+            return  # Exit if no rounds were created
+        
+        # Step 3 - Iterate Over Each Round and Matchup
         for round_number, matchups in enumerate(tournament.rounds, start=1):
-            print(f"Round {round_number}: {matchups}")  # Debugging
-            # Create the label for the round number
-            round_label = QLabel(f"🛡️Round {round_number}")
-            round_label.setStyleSheet("font-size: 20px; font-weight: bold; margin-top: 15px; color: #ffcc00;")
-            round_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.layout.addWidget(round_label)
-            # Create the table for the round
-            table = QTableWidget()
-            table.setColumnCount(4)
-            table.setRowCount(len(matchups)) # Amount of rows is dependent on the number of matchups created for the round
-
-            # Set Headers for the table
-            headers = ["Player 1", "Player 2", "Winner", "Table Number"]
-            # Iterate through the pairs col (column number) and header_text and pass the headers list through to be assigned as a header in the table
-            for col, header_text in enumerate(headers):
+            print(f"Round {round_number}: {matchups}")  # Debugging output
+            
+            # Step 4 - Create and Style Round Labels
+            round_label = QLabel(f"🛡️ Round {round_number}")  # Create label
+            round_label.setStyleSheet("font-size: 20px; font-weight: bold; margin-top: 15px; color: #ffcc00;")  # Style label
+            round_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center-align label
+            self.layout.addWidget(round_label)  # Add label to layout
+            
+            # Step 5 - Create the Round Table
+            table = QTableWidget()  # Create table
+            table.setColumnCount(4)  # Define number of columns
+            table.setRowCount(len(matchups))  # Set number of rows to match number of matchups
+            
+            # Set Headers for the Table
+            headers = ["Player 1", "Player 2", "Winner", "Table Number"]  # Column headers
+            for col, header_text in enumerate(headers):  # Assign headers to table
                 table.setHorizontalHeaderItem(col, QTableWidgetItem(header_text))
-
-            # Set the Header Visibility
-            table.horizontalHeader().setVisible(True)
-            table.verticalHeader().setVisible(False)
-
-            # Set the Header Sizing
+            
+            # Step 6 - Style and Populate Match Table
+            table.horizontalHeader().setVisible(True)  # Show headers
+            table.verticalHeader().setVisible(False)  # Hide vertical headers
             table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
             table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
             table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
-
-            # Iterate through the pairs row (row number) and match, and pass through each matchup (the players competing in that match/round)
-            # Put each player and the assigned table number that they will sit at in the cafe into the table
+            
             for row, match in enumerate(matchups):
-                table.setItem(row, 0, QTableWidgetItem(match["p1"]))
-                table.setItem(row, 1, QTableWidgetItem(match["p2"]))
-                # Do not put a table number here, for some reason it causes a run time error
-            """
-                # Add a Winner Button for Manual Winner Entry
-                # Create a button group so only one can be selected
-                winner_group = QButtonGroup(table)
-    
-                # Radio buttons for each player
-                p1_button = QRadioButton(match["p1"])
-                p2_button = QRadioButton(match["p2"])
-
-                # Add them to the button group (so only one can be selected at a time)
-                winner_group.addButton(p1_button)
-                winner_group.addButton(p2_button)
-
-                # Connect selection to set_winner method
-                p1_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p1"]) if checked else None)
-                p2_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p2"]) if checked else None)
-
-                # Add to the table
-                table.setCellWidget(row, 2, p1_button)
-                table.setCellWidget(row, 3, p2_button)
-            """
-
-            # Force UI Update otherwise the headers for the table will not show
-            table.viewport().update()
-            # Add the table to the layout
-            self.layout.addWidget(table)
+                table.setItem(row, 0, QTableWidgetItem(match["p1"]))  # Player 1
+                table.setItem(row, 1, QTableWidgetItem(match["p2"]))  # Player 2
+                # The table number is omitted to avoid a runtime error
+            
+            # Step 7 - Update and Display Table
+            table.viewport().update()  # Force UI refresh (otherwise the table will not show)
+            self.layout.addWidget(table)  # Add table to layout
 
     def create_double_elimination_bracket(self, tournament):
-        """ Creates a bracket for any tournament type that is set as a double elimination tournament """
-        # Debugging below displays tournament data to make sure the correct information is being obtained and passed through.
-        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}")  # Debugging
-        # Call the function to generate rounds for this tournament
-        tournament.generate_rounds() 
-        print(f"Rounds generated: {tournament.rounds}")  # Debugging
+        """
+        **Displays a double elimination tournament bracket using rounds from the Tournament instance.**
         
-        # If no rounds are generated, this decision statement will run
+        **Why This Function Exists:**
+        - Double elimination tournaments require a structured bracket display.
+        - Tournament rounds must be dynamically generated based on the number of players.
+        - Players are only eliminated after two losses, making future matchups more complex.
+        
+        **Implementation Decisions:**
+        - Calls `generate_rounds()` to ensure matchups are created before display.
+        - Uses a `QTableWidget` for structured data presentation.
+        - Applies different styling to improve readability.
+        
+        **Parameters:**
+        - `tournament` (DoubleEliminationTournament): The tournament instance containing match data.
+        
+        **Step-by-Step Explanation:**
+        1️⃣ **Step 1 - Generate Tournament Rounds**
+           - Calls `generate_rounds()` to create matchups.
+        
+        2️⃣ **Step 2 - Check if Rounds Exist**
+           - If no rounds were generated, exit early to avoid errors.
+        
+        3️⃣ **Step 3 - Iterate Over Each Round**
+           - Create a visual representation for each round.
+           - `enumerate()` is used to automatically generate the round number while iterating. (enumerate is used for iterating in pairs)
+           - This ensures each round is properly labeled without manually tracking the index.
+        
+        4️⃣ **Step 4 - Create and Style Round Labels**
+           - Adds a label to indicate the current round number.
+        
+        5️⃣ **Step 5 - Create the Match Table**
+           - Generates a `QTableWidget` to structure the match data.
+        
+        6️⃣ **Step 6 - Populate Match Table**
+           - Inserts player names and determines the winner based on match results.
+        
+        7️⃣ **Step 7 - Update and Display Table**
+           - Ensures the UI updates correctly and adds the table to the layout.
+        """
+        
+        # Step 1 - Generate Tournament Rounds
+        print(f"Generating rounds for tournament: {tournament.name}, Max Players: {tournament.max_players}")  # Debugging
+        tournament.generate_rounds()  # Generate the rounds for the tournament
+        print(f"Rounds generated: {tournament.rounds}")  # Debugging output displays number of rounds
+        
+        # Step 2 - Check if Rounds Exist
         if not tournament.rounds:
             print("❌ No rounds were generated. Ensure max_players is set correctly.")
-            return
-
-        # Iterate through each pair of objects: round number and matchups (the players assigned to compete), for each round
-        # Create a label to display the data for each iteration
+            return  # Exit if no rounds were created
+        
+        # Step 3 - Iterate Over Each Round and Matchup
         for round_number, matchups in enumerate(tournament.rounds, start=1):
-            print(f"Round {round_number}: {matchups}")  # Debugging
-
-            # Create a label for the round number
-            round_label = QLabel(f"🛡️ Round {round_number}")
-            round_label.setStyleSheet("font-size: 20px; font-weight: bold; margin-top: 15px; color: #ffcc00;")
-            round_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.layout.addWidget(round_label)
-
-            # Create the table for the round
-            table = QTableWidget()
-            table.setColumnCount(3)
-            table.setRowCount(len(matchups)) # The amount of rows is dependent on the number of matchups
-
-            # Set Headers for the table
-            headers = ["Player 1", "Player 2", "Winner"]
-
-            # Iterate through the pairs col (column number) and header_text and pass the headers list through to be assigned as a header in the table
-            for col, header_text in enumerate(headers):
+            print(f"Round {round_number}: {matchups}")  # Debugging output
+            
+            # Step 4 - Create and Style Round Labels
+            round_label = QLabel(f"🛡️ Round {round_number}")  # Create label
+            round_label.setStyleSheet("font-size: 20px; font-weight: bold; margin-top: 15px; color: #ffcc00;")  # Style label
+            round_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center-align label
+            self.layout.addWidget(round_label)  # Add label to layout
+            
+            # Step 5 - Create the Round Table
+            table = QTableWidget()  # Create table
+            table.setColumnCount(3)  # Define number of columns
+            table.setRowCount(len(matchups))  # Set number of rows to match number of matchups
+            
+            # Set Headers for the Table
+            headers = ["Player 1", "Player 2", "Winner"]  # Column headers
+            for col, header_text in enumerate(headers):  # Assign headers to table
                 table.setHorizontalHeaderItem(col, QTableWidgetItem(header_text))
-
-            # Set the visibility for the headers
-            table.horizontalHeader().setVisible(True)
-            table.verticalHeader().setVisible(True)
+            
+            # Step 6 - Style and Populate Match Table
+            table.horizontalHeader().setVisible(True)  # Show headers
+            table.verticalHeader().setVisible(False)  # Hide vertical headers
             table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-
-            # Iterate through the pairs row (row number) and match, and pass through each matchup (the players competing in that match/round)
-            # Put each player and the assigned table number that they will sit at in the cafe into the table
+            
             for row, match in enumerate(matchups):
-                # Check that the matchup is an instance
-                # In double elimination, future matchups are not able to be determined due to each player needing to lose twice in order to be eliminated
-                # Therefore, each matchup needs to be an instance based on the players that have not been eliminated
-                if isinstance(match, dict):
-                    # Assign each player in the match instance with the gamertag, or with TBD
-                    player1 = str(match.get("p1", "TBD"))
-                    player2 = str(match.get("p2", "TBD"))
-                    winner = str(match.get("winner", "TBD"))
-                    # Add each into the table
-                    table.setItem(row, 0, QTableWidgetItem(player1))
-                    table.setItem(row, 1, QTableWidgetItem(player2))
-                    table.setItem(row, 2, QTableWidgetItem(winner))
-                """
-                    # Add a Winner Button for Manual Winner Entry
-                    # Create a button group so only one can be selected
-                    winner_group = QButtonGroup(table)
-    
-                    # Radio buttons for each player
-                    p1_button = QRadioButton(match["p1"])
-                    p2_button = QRadioButton(match["p2"])
-
-                    # Add them to the button group (so only one can be selected at a time)
-                    winner_group.addButton(p1_button)
-                    winner_group.addButton(p2_button)
-
-                    # Connect selection to set_winner method
-                    p1_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p1"]) if checked else None)
-                    p2_button.toggled.connect(lambda checked: self.tournament.set_winner(round_number, match, match["p2"]) if checked else None)
-
-                    # Add to the table
-                    table.setCellWidget(row, 2, p1_button)
-                    table.setCellWidget(row, 3, p2_button)
-                
+                if isinstance(match, dict):  # Ensure the match is in dictionary format
+                    player1 = str(match.get("p1", "TBD"))  # Get player 1's name or TBD if unknown
+                    player2 = str(match.get("p2", "TBD"))  # Get player 2's name or TBD if unknown
+                    winner = str(match.get("winner", "TBD"))  # Get the winner or TBD if undecided
+                    
+                    table.setItem(row, 0, QTableWidgetItem(player1))  # Set Player 1
+                    table.setItem(row, 1, QTableWidgetItem(player2))  # Set Player 2
+                    table.setItem(row, 2, QTableWidgetItem(winner))  # Set Winner
                 else:
                     print(f"❌ Unexpected match format: {match}")  # Debugging
-                """
-            # Add Table to Layout and for a UI update on the table
-            table.viewport().update()
-            self.layout.addWidget(table)
+            
+            # Step 7 - Update and Display Table
+            table.viewport().update()  # Force UI refresh (otherwise the table will not show)
+            self.layout.addWidget(table)  # Add table to layout
 
 
-        """
-        # **Grand Finals**
-        if hasattr(tournament, "grand_finals"):
-            final_label = QLabel("🏆 Grand Finals")
-            final_label.setStyleSheet("font-size: 22px; font-weight: bold; margin-top: 20px; color: #ff0000;")
-            final_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.layout.addWidget(final_label)
+# Saved code for winner button to be added into each bracket table
+# Would be added at the end of step 6 as part of populating the table
+"""
+# Create a button group so only one can be selected
+winner_group = QButtonGroup(table)
 
-            final_table = QTableWidget()
-            final_table.setColumnCount(3)
-            final_table.setRowCount(1)
-            final_table.setHorizontalHeaderItem(0, QTableWidgetItem("Player 1"))
-            final_table.setHorizontalHeaderItem(1, QTableWidgetItem("Player 2"))
-            final_table.setHorizontalHeaderItem(2, QTableWidgetItem("Winner"))
+# Radio buttons for each player
+p1_button = QRadioButton(match["p1"])
+p2_button = QRadioButton(match["p2"])
 
-            final_table.setItem(0, 0, QTableWidgetItem(tournament.grand_finals["p1"]))
-            final_table.setItem(0, 1, QTableWidgetItem(tournament.grand_finals["p2"]))
-            final_table.setItem(0, 2, QTableWidgetItem(str(tournament.grand_finals["winner"])))
+# Add them to the button group (so only one can be selected at a time)
+winner_group.addButton(p1_button)
+winner_group.addButton(p2_button)
 
-            self.layout.addWidget(final_table)
+# Connect selection to set_winner method
+p1_button.toggled.connect(lambda checked, r=round_number, m=match, p=match["p1"]: self.tournament.set_winner(r, m, p) if checked else None)
+p2_button.toggled.connect(lambda checked, r=round_number, m=match, p=match["p2"]: self.tournament.set_winner(r, m, p) if checked else None)
 
-        """
+# Add to the table
+table.setCellWidget(row, 2, p1_button)
+table.setCellWidget(row, 3, p2_button)
+"""

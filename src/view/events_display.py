@@ -109,116 +109,116 @@ class EventsDisplay(QWidget):
             event_widget = self.create_event_widget(campaign, event_type="campaign")  # Create campaign UI element
             self.event_layout.addWidget(event_widget)  # Add campaign widget to event layout
 
-def create_event_widget(self, event: dict, event_type: str) -> QFrame:
-    """
-    **Creates a UI widget for displaying a tournament or campaign event.**
+    def create_event_widget(self, event: dict, event_type: str) -> QFrame:
+        """
+        **Creates a UI widget for displaying a tournament or campaign event.**
 
-    **Why This Function Exists:**
-    - Each event must be visually distinct and formatted with relevant details.
-    - The function dynamically formats event details based on event type (tournament or campaign).
-    - Users should be able to sign up for an event directly from the UI.
+        **Why This Function Exists:**
+        - Each event must be visually distinct and formatted with relevant details.
+        - The function dynamically formats event details based on event type (tournament or campaign).
+        - Users should be able to sign up for an event directly from the UI.
 
-    **Parameters:**
-    - `event` (dict): A dictionary containing event details such as name, date, and additional information.
-    - `event_type` (str): A string that specifies whether the event is a "tournament" or "campaign".
+        **Parameters:**
+        - `event` (dict): A dictionary containing event details such as name, date, and additional information.
+        - `event_type` (str): A string that specifies whether the event is a "tournament" or "campaign".
 
-    **Returns:**
-    - `QFrame`: A styled frame widget containing the formatted event information and a sign-up button.
+        **Returns:**
+        - `QFrame`: A styled frame widget containing the formatted event information and a sign-up button.
         **Step-by-Step Breakdown:**
-    1️⃣ **Step 1 - Create the Event Container**
-       - Initializes a `QFrame` to visually separate each event in the UI.
-       - Styles the frame with a dark background and a red border.
+        1️⃣ **Step 1 - Create the Event Container**
+        - Initializes a `QFrame` to visually separate each event in the UI.
+        - Styles the frame with a dark background and a red border.
 
-    2️⃣ **Step 2 - Create and Style the Layout**
-       - Initializes a vertical layout (`QVBoxLayout`) to organize the event details.
+        2️⃣ **Step 2 - Create and Style the Layout**
+        - Initializes a vertical layout (`QVBoxLayout`) to organize the event details.
 
-    3️⃣ **Step 3 - Create and Style the Title**
-       - Extracts the event name from the dictionary and displays it as a `QLabel`.
-       - Applies bold styling and a red font color for visibility.
+        3️⃣ **Step 3 - Create and Style the Title**
+        - Extracts the event name from the dictionary and displays it as a `QLabel`.
+        - Applies bold styling and a red font color for visibility.
 
-    4️⃣ **Step 4 - Format Event-Specific Details**
-       - If the event is a **tournament**, it displays:
-         - 📅 Date & Time
-         - 💰 Entry Fee & 🏆 Prize
-       - If the event is a **campaign**, it displays:
-         - 📅 Meeting Day & Frequency
-         - 🎲 Dungeon Master (DM) & 👥 Max Players
+        4️⃣ **Step 4 - Format Event-Specific Details**
+        - If the event is a **tournament**, it displays:
+            - 📅 Date & Time
+            - 💰 Entry Fee & 🏆 Prize
+        - If the event is a **campaign**, it displays:
+            - 📅 Meeting Day & Frequency
+            - 🎲 Dungeon Master (DM) & 👥 Max Players
 
-    5️⃣ **Step 5 - Style and Add Event Information**
-       - Styles the event details and adds them to the layout.
+        5️⃣ **Step 5 - Style and Add Event Information**
+        - Styles the event details and adds them to the layout.
 
-    6️⃣ **Step 6 - Create and Style the Sign-Up Button**
-       - Initializes a `QPushButton` labeled **"Sign Up"**.
-       - Styles the button with a red theme and hover/press effects.
+        6️⃣ **Step 6 - Create and Style the Sign-Up Button**
+        - Initializes a `QPushButton` labeled **"Sign Up"**.
+        - Styles the button with a red theme and hover/press effects.
 
-    7️⃣ **Step 7 - Connect the Button to the Controller**
-       - Connects the sign-up button to `self.controller.on_signup()`.
-       - Uses `lambda` to pass the event name and type when clicked.
+        7️⃣ **Step 7 - Connect the Button to the Controller**
+        - Connects the sign-up button to `self.controller.on_signup()`.
+        - Uses `lambda` to pass the event name and type when clicked.
 
-    8️⃣ **Step 8 - Finalize and Return the Event Widget**
-       - Sets the layout for the frame and returns the fully constructed widget.
-    """
+        8️⃣ **Step 8 - Finalize and Return the Event Widget**
+        - Sets the layout for the frame and returns the fully constructed widget.
+        """
 
-    # Step 1: Create a frame container to visually separate each event in the UI.
-    frame = QFrame()
-    frame.setStyleSheet("background-color: #201212; border: 2px solid #8b0000; border-radius: 10px; padding: 10px;")
+        # Step 1: Create a frame container to visually separate each event in the UI.
+        frame = QFrame()
+        frame.setStyleSheet("background-color: #201212; border: 2px solid #8b0000; border-radius: 10px; padding: 10px;")
 
-    # Step 2: Create a vertical layout to hold event details within the frame.
-    layout = QVBoxLayout()
+        # Step 2: Create a vertical layout to hold event details within the frame.
+        layout = QVBoxLayout()
 
-    # Step 3: Create and style the title label, which displays the name of the event.
-    title = QLabel(event["name"])  # Extract the event name from the dictionary.
-    title.setStyleSheet("font-size: 16px; font-weight: bold; color: #ff5555;")  # Apply styling for better readability.
-    layout.addWidget(title)  # Add the title label to the layout.
+        # Step 3: Create and style the title label, which displays the name of the event.
+        title = QLabel(event["name"])  # Extract the event name from the dictionary.
+        title.setStyleSheet("font-size: 16px; font-weight: bold; color: #ff5555;")  # Apply styling for better readability.
+        layout.addWidget(title)  # Add the title label to the layout.
 
-    # Step 4: Display relevant event details based on whether it's a tournament or a campaign.
-    if event_type == "tournament":
-        # Format the event date and time with a calendar emoji.
-        date_time = QLabel(f"\U0001F4C5 {event['date']} at {event['time']}")
-        # Format additional details like entry fee and prize.
-        extra_info = QLabel(f"\U0001F4B0 Entry Fee: {event['entry_fee']} | \U0001F3C6 Prize: {event['prize']}")
-    else:
-        # Format the campaign meeting schedule with a calendar emoji.
-        date_time = QLabel(f"\U0001F4C5 {event['meet_day']} ({event['meet_frequency']}) at {event['time']}")
-        # Format additional details like the Dungeon Master (DM) and max players.
-        extra_info = QLabel(f"\U0001F3B2 DM: {event['host']} | \U0001F465 Max Players: {event['max_players']}")
+        # Step 4: Display relevant event details based on whether it's a tournament or a campaign.
+        if event_type == "tournament":
+            # Format the event date and time with a calendar emoji.
+            date_time = QLabel(f"\U0001F4C5 {event['date']} at {event['time']}")
+            # Format additional details like entry fee and prize.
+            extra_info = QLabel(f"\U0001F4B0 Entry Fee: {event['entry_fee']} | \U0001F3C6 Prize: {event['prize']}")
+        else:
+            # Format the campaign meeting schedule with a calendar emoji.
+            date_time = QLabel(f"\U0001F4C5 {event['meet_day']} ({event['meet_frequency']}) at {event['time']}")
+            # Format additional details like the Dungeon Master (DM) and max players.
+            extra_info = QLabel(f"\U0001F3B2 DM: {event['host']} | \U0001F465 Max Players: {event['max_players']}")
 
-    # Step 5: Style and add the event details to the layout.
-    date_time.setStyleSheet("font-size: 14px; color: #ffffff;")  # Set font size and color for readability.
-    extra_info.setStyleSheet("font-size: 13px; color: #cccccc;")  # Style additional details with a slightly smaller font.
-    layout.addWidget(date_time)  # Add the date/time label to the layout.
-    layout.addWidget(extra_info)  # Add the extra information label to the layout.
+        # Step 5: Style and add the event details to the layout.
+        date_time.setStyleSheet("font-size: 14px; color: #ffffff;")  # Set font size and color for readability.
+        extra_info.setStyleSheet("font-size: 13px; color: #cccccc;")  # Style additional details with a slightly smaller font.
+        layout.addWidget(date_time)  # Add the date/time label to the layout.
+        layout.addWidget(extra_info)  # Add the extra information label to the layout.
 
-    # Step 6: Create and style the sign-up button.
-    signup_button = QPushButton("Sign Up")  # Create a button labeled "Sign Up".
-    signup_button.setStyleSheet("""
-        QPushButton {
-            background-color: #8b0000;
-            color: white;
-            border: 2px solid #ff3333;
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        QPushButton:hover {
-            background-color: #a00000;
-            border: 2px solid #ff5555;
-        }
-        QPushButton:pressed {
-            background-color: #6a0000;
-            border: 2px solid #cc0000;
-        }
-    """)  # Apply styling for a visually appealing button.
+        # Step 6: Create and style the sign-up button.
+        signup_button = QPushButton("Sign Up")  # Create a button labeled "Sign Up".
+        signup_button.setStyleSheet("""
+            QPushButton {
+                background-color: #8b0000;
+                color: white;
+                border: 2px solid #ff3333;
+                border-radius: 10px;
+                padding: 10px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #a00000;
+                border: 2px solid #ff5555;
+            }
+            QPushButton:pressed {
+                background-color: #6a0000;
+                border: 2px solid #cc0000;
+            }
+        """)  # Apply styling for a visually appealing button.
 
-    # Step 7: Connect the button to the sign-up function in the controller.
-    # - This lambda function passes the event name and type to the controller's `on_signup` method when clicked.
-    signup_button.clicked.connect(lambda: self.controller.on_signup(event["name"], event_type))
-    layout.addWidget(signup_button, alignment=Qt.AlignmentFlag.AlignCenter)  # Add the button to the layout and center it.
+        # Step 7: Connect the button to the sign-up function in the controller.
+        # - This lambda function passes the event name and type to the controller's `on_signup` method when clicked.
+        signup_button.clicked.connect(lambda: self.controller.on_signup(event["name"], event_type))
+        layout.addWidget(signup_button, alignment=Qt.AlignmentFlag.AlignCenter)  # Add the button to the layout and center it.
 
-    # Step 8: Apply the layout to the frame and return it.
-    frame.setLayout(layout)  # Set the layout for the event frame.
-    return frame  # Return the fully constructed event widget.
+        # Step 8: Apply the layout to the frame and return it.
+        frame.setLayout(layout)  # Set the layout for the event frame.
+        return frame  # Return the fully constructed event widget.
 
 class AllEventsDisplay(QWidget):
     """

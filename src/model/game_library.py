@@ -1,12 +1,35 @@
 class GameLibrary:
     """
-    This class is the game library, which stores each game hosted at the cafe.
-    A dictionary is used to store each game and its data.
-    The key is the game title, the first list item is the category, and the second list item is the file path to the photo.
-    key : [list item 1, list item 2]     |      game title : [category, image file path]
+    **GameLibrary Class**
+    
+    **Class Purpose:**
+    - Stores and manages all games available at the cafe.
+    - Uses a dictionary to store each game's **title, category, and image path**.
+    
+    **Why This Class Exists:**
+    - Provides a **centralized** storage system for games.
+    - Allows easy retrieval of game information for display in the UI.
+    - Ensures game data remains **organized and accessible**.
+    
+    **Benefits to the Project:**
+    - Makes it easy to **add or update games** in a single place.
+    - Simplifies fetching game-related information dynamically.
+    - Reduces **hardcoded game data** across multiple files, because it is centralized here.
     """
+    
     def __init__(self):
-        # Dictionary named games
+        """
+        **Initializes the GameLibrary and populates the games dictionary.**
+        
+        **Implementation Decisions:**
+        - Uses a dictionary where:
+          - The **key** is the game title.
+          - The **value** is a list containing:
+            1. The game **category** (e.g., 'competitive', 'campaign').
+            2. The **image file path** for UI display.
+        """
+        
+        # Dictionary named `games` containing all hosted games at the cafe.
         self.games: dict[str, list[str]] = {
             'chess': ['competitive', 'resources/images/chess.png'],
             'dnd': ['campaign', 'resources/images/dnd.png'],
@@ -21,7 +44,17 @@ class GameLibrary:
         }
 
     def display_games(self) -> list[str]:
-        """Return a list of all game names."""
-        return list(self.games.keys()) # Returns keys of dictionary since each key is set up as the game name
-
-    
+        """
+        **Returns a list of all available game names.**
+        
+        **Why This Function Exists:**
+        - Provides a simple way to retrieve all games stored in `GameLibrary`.
+        - Ensures the UI or other components can dynamically fetch game names.
+        
+        **Implementation Decisions:**
+        - Uses `self.games.keys()` to extract game names efficiently.
+        
+        **Returns:**
+        - A list of strings containing all game titles.
+        """
+        return list(self.games.keys())  # Extracts and returns all game titles from the dictionary
